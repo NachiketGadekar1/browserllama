@@ -1,0 +1,23 @@
+{
+  "manifest_version": 3,
+  "name": "Browserllama",
+  "version": "1.0",
+  "description": "Web enhancement extension that uses local llms.",
+  "permissions": ["tabs","nativeMessaging","scripting", "activeTab","storage"],
+  "background": {
+    "service_worker": "background.js"
+   },
+  "content_scripts": [
+    {
+      "matches": ["<all_urls>"],
+      "js": ["dist/content-script.bundle.js"]
+    }
+  ],
+  "action": {
+    "default_title": "Browserllama",
+    "default_popup": "home.html"
+  },
+  "icons": {
+    "128": "icon-128.png"
+  }
+}

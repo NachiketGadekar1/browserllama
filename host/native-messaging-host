@@ -1,0 +1,123 @@
+#!/usr/bin/python3
+import struct
+import sys
+import logging
+import traceback
+import threading
+import json
+import time
+import queue
+from backend_api_handler import kcpp_api
+
+logging.info(f"Native-messaging-host moduule ACTIVE")
+
+#logging
+#remove from prod??
+logging.basicConfig(filename='native_messaging.log', level=logging.INFO, 
+                    format='%(asctime)s - %(message)s', datefmt='%Y-%m-%d %H:%M:%S')
+
+ai = kcpp_api()
+global_data = None
+q = queue.Queue()
+
+# On Windows, the default I/O mode is O_TEXT. Set this to O_BINARY
+# to avoid unwanted modifications of the input/output streams.
+if sys.platform == "win32":
+  import os, msvcrt
+  msvcrt.setmode(sys.stdin.fileno(), os.O_BINARY)
+  msvcrt.setmode(sys.stdout.fileno(), os.O_BINARY)
+
+# Helper function that sends a message to the webapp.
+def send_message(message):
+  # Write message size.
+  sys.stdout.buffer.write(struct.pack('I', len(message)))
+  # Write the message itself.
+  sys.stdout.write(message)
+  sys.stdout.flush()
+  logging.info(f"Output from send_msg: {message}")
+  
+  
+# Function that reads messages from the webapp.
+def read_messages(): 
+  # received string looks like this:
+  # '{"data":{"status":"new_chat","text":"hi"}}'
+  try:
+    global global_data
+    logging.info('Input: "read_message func active"')
+    while True:
+      # Read the message length (first 4 bytes).
+      text_length_bytes = sys.stdin.buffer.read(4)
+      if len(text_length_bytes) == 0:
+        sys.exit(0)
+
+      # Unpack message length as 4 byte integer.
+      text_length = struct.unpack('@I', text_length_bytes)[0]
+
+      # Read the text (JSON object) of the message.
+      text = sys.stdin.buffer.read(text_length).decode('utf-8')
+      logging.info(f"received data from extension: {text}")
+
+      if text == '{"text":"exit"}':
+        break
+      global_data = text
+      # Send an echo message back.
+      send_message(json.dumps({"echo message from native host": text}))
+  except Exception as e:
+            logging.error(f"Error in read_messages: {str(e)}")
+    
+    
+#run the model with user prompt/webpage
+def call_handle_message():
+   logging.info("***********call_handle_message func IS ACTIVE*********")
+   global global_data
+   prev_data = ""
+   while True:
+        data = global_data
+        if prev_data != data and data !=None:
+            prev_data=data      
+            try:
+              #TODO: try passing a queue to the module here              
+              textobj = ai.handle_message(prev_data,q)
+              text = textobj[0]['text']
+              logging.info("returned data")  
+              logging.info(text)   
+              send_message(json.dumps({"ai_response": text}))
+            except Exception as e:
+                logging.error(f"Error in call_handle_message: {str(e)}")
+        # else:
+        #     logging.info("queue data is same")       
+        
+        time.sleep(0.2)  
+     
+
+# send individuals chunks to the extension
+def send_chunks():
+    logging.info("**************SEND CHUNKS IS ACTIVE***************")
+    while True:  
+        try:
+            while not q.empty():
+                chunk = q.get()
+                logging.info(f"*****HOST received data from backend*****: {chunk}")
+                send_message(json.dumps({"ai_response_chunk": chunk}))
+            time.sleep(0.1)  
+        except Exception as e:
+            logging.error(f"Error in send_chunks: {str(e)}")
+     
+def Main():
+    try:
+        handle_thread = threading.Thread(target=call_handle_message)
+        send_chunks_thread = threading.Thread(target=send_chunks)
+        handle_thread.daemon = True
+        send_chunks_thread.daemon = True
+        handle_thread.start()
+        send_chunks_thread.start()
+        read_messages()
+        logging.info("Exiting Main")
+    except Exception as e:
+        logging.error(f"Error in Main: {str(e)}")
+        logging.error(traceback.format_exc())        
+       
+
+if __name__ == '__main__':
+  Main()
+  

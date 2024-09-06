@@ -1,0 +1,11 @@
+// Copyright 2013 The Chromium Authors. All rights reserved.
+// Use of this source code is governed by a BSD-style license that can be
+// found in the LICENSE file.
+
+{
+  "name": "com.google.chrome.example.echo",
+  "description": "Chrome Native Messaging API Host",
+  "path": "native-messaging-host.bat",
+  "type": "stdio",
+  "allowed_origins": ["chrome-extension://bjllaifdgfamadloalnjcpghkhbdpnem/"]
+}

@@ -1,0 +1,525 @@
+2024-09-05 20:43:39 - received data from extension: {"data":{"status":"new_chat","task":"chat","text":"hi"}}
+2024-09-05 20:43:39 - Output from send_msg: {"echo message from native host": "{\"data\":{\"status\":\"new_chat\",\"task\":\"chat\",\"text\":\"hi\"}}"}
+2024-09-05 20:43:40 - output: " backend module is ACTIVE"
+2024-09-05 20:43:40 - user_message bah: {'data': {'status': 'new_chat', 'task': 'chat', 'text': 'hi'}}
+2024-09-05 20:43:40 - New chat detected. Clearing conversation history.
+2024-09-05 20:43:40 - Cleared conversation history file: conv_history.txt
+2024-09-05 20:43:40 - adding data to queue
+2024-09-05 20:43:40 - *****HOST received data from backend*****:  Hello
+2024-09-05 20:43:40 - Output from send_msg: {"ai_response_chunk": " Hello"}
+2024-09-05 20:43:40 - adding data to queue
+2024-09-05 20:43:40 - *****HOST received data from backend*****: !
+2024-09-05 20:43:40 - Output from send_msg: {"ai_response_chunk": "!"}
+2024-09-05 20:43:40 - adding data to queue
+2024-09-05 20:43:40 - *****HOST received data from backend*****:  How
+2024-09-05 20:43:40 - Output from send_msg: {"ai_response_chunk": " How"}
+2024-09-05 20:43:41 - adding data to queue
+2024-09-05 20:43:41 - *****HOST received data from backend*****:  can
+2024-09-05 20:43:41 - Output from send_msg: {"ai_response_chunk": " can"}
+2024-09-05 20:43:41 - adding data to queue
+2024-09-05 20:43:41 - *****HOST received data from backend*****:  I
+2024-09-05 20:43:41 - Output from send_msg: {"ai_response_chunk": " I"}
+2024-09-05 20:43:41 - adding data to queue
+2024-09-05 20:43:41 - *****HOST received data from backend*****:  help
+2024-09-05 20:43:41 - Output from send_msg: {"ai_response_chunk": " help"}
+2024-09-05 20:43:41 - adding data to queue
+2024-09-05 20:43:41 - *****HOST received data from backend*****:  you
+2024-09-05 20:43:41 - Output from send_msg: {"ai_response_chunk": " you"}
+2024-09-05 20:43:41 - adding data to queue
+2024-09-05 20:43:41 - *****HOST received data from backend*****:  today
+2024-09-05 20:43:41 - Output from send_msg: {"ai_response_chunk": " today"}
+2024-09-05 20:43:42 - adding data to queue
+2024-09-05 20:43:42 - *****HOST received data from backend*****: ?
+2024-09-05 20:43:42 - Output from send_msg: {"ai_response_chunk": "?"}
+2024-09-05 20:43:42 - Out: [{'text': ' Hello! How can I help you today?', 'finish_reason': 'stop'}]
+2024-09-05 20:43:42 - returned data
+2024-09-05 20:43:42 -  Hello! How can I help you today?
+2024-09-05 20:43:42 - Output from send_msg: {"ai_response": " Hello! How can I help you today?"}
+2024-09-05 20:44:55 - kcpp_api module imported
+2024-09-05 20:44:55 - Native-messaging-host moduule ACTIVE
+2024-09-05 20:44:55 - Deleted previous conversation history: conv_history.txt
+2024-09-05 20:44:55 - ***********call_handle_message func IS ACTIVE*********
+2024-09-05 20:44:55 - **************SEND CHUNKS IS ACTIVE***************
+2024-09-05 20:44:55 - Input: "read_message func active"
+2024-09-05 20:44:55 - kcpp_api module imported
+2024-09-05 20:44:55 - Native-messaging-host moduule ACTIVE
+2024-09-05 20:44:55 - ***********call_handle_message func IS ACTIVE*********
+2024-09-05 20:44:55 - **************SEND CHUNKS IS ACTIVE***************
+2024-09-05 20:44:55 - Input: "read_message func active"
+2024-09-05 20:47:59 - kcpp_api module imported
+2024-09-05 20:47:59 - kcpp_api module imported
+2024-09-05 20:47:59 - Native-messaging-host moduule ACTIVE
+2024-09-05 20:47:59 - Native-messaging-host moduule ACTIVE
+2024-09-05 20:47:59 - ***********call_handle_message func IS ACTIVE*********
+2024-09-05 20:47:59 - ***********call_handle_message func IS ACTIVE*********
+2024-09-05 20:47:59 - **************SEND CHUNKS IS ACTIVE***************
+2024-09-05 20:47:59 - **************SEND CHUNKS IS ACTIVE***************
+2024-09-05 20:47:59 - Input: "read_message func active"
+2024-09-05 20:47:59 - Input: "read_message func active"
+2024-09-05 20:48:51 - kcpp_api module imported
+2024-09-05 20:48:51 - Native-messaging-host moduule ACTIVE
+2024-09-05 20:48:51 - ***********call_handle_message func IS ACTIVE*********
+2024-09-05 20:48:51 - **************SEND CHUNKS IS ACTIVE***************
+2024-09-05 20:48:51 - Input: "read_message func active"
+2024-09-05 20:48:51 - kcpp_api module imported
+2024-09-05 20:48:51 - Native-messaging-host moduule ACTIVE
+2024-09-05 20:48:51 - ***********call_handle_message func IS ACTIVE*********
+2024-09-05 20:48:51 - **************SEND CHUNKS IS ACTIVE***************
+2024-09-05 20:48:51 - Input: "read_message func active"
+2024-09-05 20:48:53 - received data from extension: {"data":{"status":"new_chat","task":"summary","text":"summarise this webpage\n    \n    This domain is for use in illustrative examples in documents. You may use this\n    domain in literature without prior coordination or asking for permission.\n    More information...\n"}}
+2024-09-05 20:48:53 - Output from send_msg: {"echo message from native host": "{\"data\":{\"status\":\"new_chat\",\"task\":\"summary\",\"text\":\"summarise this webpage\\n    \\n    This domain is for use in illustrative examples in documents. You may use this\\n    domain in literature without prior coordination or asking for permission.\\n    More information...\\n\"}}"}
+2024-09-05 20:48:53 - output: " backend module is ACTIVE"
+2024-09-05 20:48:53 - user_message bah: {'data': {'status': 'new_chat', 'task': 'summary', 'text': 'summarise this webpage\n    \n    This domain is for use in illustrative examples in documents. You may use this\n    domain in literature without prior coordination or asking for permission.\n    More information...\n'}}
+2024-09-05 20:48:53 - New chat detected. Clearing conversation history.
+2024-09-05 20:48:53 - Cleared conversation history file: conv_history.txt
+2024-09-05 20:48:59 - adding data to queue
+2024-09-05 20:48:59 - *****HOST received data from backend*****:  This
+2024-09-05 20:48:59 - Output from send_msg: {"ai_response_chunk": " This"}
+2024-09-05 20:48:59 - adding data to queue
+2024-09-05 20:48:59 - *****HOST received data from backend*****:  domain
+2024-09-05 20:48:59 - Output from send_msg: {"ai_response_chunk": " domain"}
+2024-09-05 20:48:59 - adding data to queue
+2024-09-05 20:48:59 - *****HOST received data from backend*****:  is
+2024-09-05 20:48:59 - Output from send_msg: {"ai_response_chunk": " is"}
+2024-09-05 20:48:59 - adding data to queue
+2024-09-05 20:48:59 - *****HOST received data from backend*****:  intended
+2024-09-05 20:48:59 - Output from send_msg: {"ai_response_chunk": " intended"}
+2024-09-05 20:48:59 - adding data to queue
+2024-09-05 20:48:59 - *****HOST received data from backend*****:  for
+2024-09-05 20:48:59 - Output from send_msg: {"ai_response_chunk": " for"}
+2024-09-05 20:48:59 - adding data to queue
+2024-09-05 20:49:00 - *****HOST received data from backend*****:  use
+2024-09-05 20:49:00 - Output from send_msg: {"ai_response_chunk": " use"}
+2024-09-05 20:49:00 - adding data to queue
+2024-09-05 20:49:00 - *****HOST received data from backend*****:  in
+2024-09-05 20:49:00 - Output from send_msg: {"ai_response_chunk": " in"}
+2024-09-05 20:49:00 - adding data to queue
+2024-09-05 20:49:00 - *****HOST received data from backend*****:  illustr
+2024-09-05 20:49:00 - Output from send_msg: {"ai_response_chunk": " illustr"}
+2024-09-05 20:49:00 - adding data to queue
+2024-09-05 20:49:00 - *****HOST received data from backend*****: ative
+2024-09-05 20:49:00 - Output from send_msg: {"ai_response_chunk": "ative"}
+2024-09-05 20:49:00 - adding data to queue
+2024-09-05 20:49:00 - *****HOST received data from backend*****:  examples
+2024-09-05 20:49:00 - Output from send_msg: {"ai_response_chunk": " examples"}
+2024-09-05 20:49:00 - adding data to queue
+2024-09-05 20:49:00 - *****HOST received data from backend*****:  in
+2024-09-05 20:49:00 - Output from send_msg: {"ai_response_chunk": " in"}
+2024-09-05 20:49:01 - adding data to queue
+2024-09-05 20:49:01 - *****HOST received data from backend*****:  documents
+2024-09-05 20:49:01 - Output from send_msg: {"ai_response_chunk": " documents"}
+2024-09-05 20:49:01 - adding data to queue
+2024-09-05 20:49:01 - *****HOST received data from backend*****: .
+2024-09-05 20:49:01 - Output from send_msg: {"ai_response_chunk": "."}
+2024-09-05 20:49:01 - adding data to queue
+2024-09-05 20:49:01 - *****HOST received data from backend*****:  It
+2024-09-05 20:49:01 - Output from send_msg: {"ai_response_chunk": " It"}
+2024-09-05 20:49:01 - adding data to queue
+2024-09-05 20:49:01 - *****HOST received data from backend*****:  can
+2024-09-05 20:49:01 - Output from send_msg: {"ai_response_chunk": " can"}
+2024-09-05 20:49:01 - adding data to queue
+2024-09-05 20:49:01 - *****HOST received data from backend*****:  be
+2024-09-05 20:49:01 - Output from send_msg: {"ai_response_chunk": " be"}
+2024-09-05 20:49:01 - adding data to queue
+2024-09-05 20:49:01 - *****HOST received data from backend*****:  used
+2024-09-05 20:49:01 - Output from send_msg: {"ai_response_chunk": " used"}
+2024-09-05 20:49:02 - adding data to queue
+2024-09-05 20:49:02 - *****HOST received data from backend*****:  without
+2024-09-05 20:49:02 - Output from send_msg: {"ai_response_chunk": " without"}
+2024-09-05 20:49:02 - adding data to queue
+2024-09-05 20:49:02 - *****HOST received data from backend*****:  prior
+2024-09-05 20:49:02 - Output from send_msg: {"ai_response_chunk": " prior"}
+2024-09-05 20:49:02 - adding data to queue
+2024-09-05 20:49:02 - *****HOST received data from backend*****:  coord
+2024-09-05 20:49:02 - Output from send_msg: {"ai_response_chunk": " coord"}
+2024-09-05 20:49:02 - adding data to queue
+2024-09-05 20:49:02 - *****HOST received data from backend*****: ination
+2024-09-05 20:49:02 - Output from send_msg: {"ai_response_chunk": "ination"}
+2024-09-05 20:49:02 - adding data to queue
+2024-09-05 20:49:02 - *****HOST received data from backend*****:  or
+2024-09-05 20:49:02 - Output from send_msg: {"ai_response_chunk": " or"}
+2024-09-05 20:49:03 - adding data to queue
+2024-09-05 20:49:03 - *****HOST received data from backend*****:  permission
+2024-09-05 20:49:03 - Output from send_msg: {"ai_response_chunk": " permission"}
+2024-09-05 20:49:03 - adding data to queue
+2024-09-05 20:49:03 - *****HOST received data from backend*****: .
+2024-09-05 20:49:03 - Output from send_msg: {"ai_response_chunk": "."}
+2024-09-05 20:49:03 - adding data to queue
+2024-09-05 20:49:03 - *****HOST received data from backend*****:  More
+2024-09-05 20:49:03 - Output from send_msg: {"ai_response_chunk": " More"}
+2024-09-05 20:49:03 - adding data to queue
+2024-09-05 20:49:03 - *****HOST received data from backend*****:  information
+2024-09-05 20:49:03 - Output from send_msg: {"ai_response_chunk": " information"}
+2024-09-05 20:49:03 - adding data to queue
+2024-09-05 20:49:03 - *****HOST received data from backend*****:  is
+2024-09-05 20:49:03 - Output from send_msg: {"ai_response_chunk": " is"}
+2024-09-05 20:49:04 - adding data to queue
+2024-09-05 20:49:04 - *****HOST received data from backend*****:  available
+2024-09-05 20:49:04 - Output from send_msg: {"ai_response_chunk": " available"}
+2024-09-05 20:49:04 - adding data to queue
+2024-09-05 20:49:04 - *****HOST received data from backend*****: .
+2024-09-05 20:49:04 - Output from send_msg: {"ai_response_chunk": "."}
+2024-09-05 20:49:04 - Out: [{'text': ' This domain is intended for use in illustrative examples in documents. It can be used without prior coordination or permission. More information is available.', 'finish_reason': 'stop'}]
+2024-09-05 20:49:04 - returned data
+2024-09-05 20:49:04 -  This domain is intended for use in illustrative examples in documents. It can be used without prior coordination or permission. More information is available.
+2024-09-05 20:49:04 - Output from send_msg: {"ai_response": " This domain is intended for use in illustrative examples in documents. It can be used without prior coordination or permission. More information is available."}
+2024-09-05 20:49:19 - kcpp_api module imported
+2024-09-05 20:49:19 - Native-messaging-host moduule ACTIVE
+2024-09-05 20:49:19 - Deleted previous conversation history: conv_history.txt
+2024-09-05 20:49:19 - ***********call_handle_message func IS ACTIVE*********
+2024-09-05 20:49:19 - **************SEND CHUNKS IS ACTIVE***************
+2024-09-05 20:49:19 - Input: "read_message func active"
+2024-09-05 20:49:19 - kcpp_api module imported
+2024-09-05 20:49:19 - Native-messaging-host moduule ACTIVE
+2024-09-05 20:49:19 - ***********call_handle_message func IS ACTIVE*********
+2024-09-05 20:49:19 - **************SEND CHUNKS IS ACTIVE***************
+2024-09-05 20:49:19 - Input: "read_message func active"
+2024-09-05 20:49:20 - received data from extension: {"data":{"status":"new_chat","task":"summary","text":"summarise this webpage\n    \n    This domain is for use in illustrative examples in documents. You may use this\n    domain in literature without prior coordination or asking for permission.\n    More information...\n"}}
+2024-09-05 20:49:20 - Output from send_msg: {"echo message from native host": "{\"data\":{\"status\":\"new_chat\",\"task\":\"summary\",\"text\":\"summarise this webpage\\n    \\n    This domain is for use in illustrative examples in documents. You may use this\\n    domain in literature without prior coordination or asking for permission.\\n    More information...\\n\"}}"}
+2024-09-05 20:49:20 - output: " backend module is ACTIVE"
+2024-09-05 20:49:20 - user_message bah: {'data': {'status': 'new_chat', 'task': 'summary', 'text': 'summarise this webpage\n    \n    This domain is for use in illustrative examples in documents. You may use this\n    domain in literature without prior coordination or asking for permission.\n    More information...\n'}}
+2024-09-05 20:49:20 - New chat detected. Clearing conversation history.
+2024-09-05 20:49:20 - Cleared conversation history file: conv_history.txt
+2024-09-05 20:49:20 - adding data to queue
+2024-09-05 20:49:20 - *****HOST received data from backend*****:  This
+2024-09-05 20:49:20 - Output from send_msg: {"ai_response_chunk": " This"}
+2024-09-05 20:49:20 - adding data to queue
+2024-09-05 20:49:21 - *****HOST received data from backend*****:  domain
+2024-09-05 20:49:21 - Output from send_msg: {"ai_response_chunk": " domain"}
+2024-09-05 20:49:21 - adding data to queue
+2024-09-05 20:49:21 - *****HOST received data from backend*****:  is
+2024-09-05 20:49:21 - Output from send_msg: {"ai_response_chunk": " is"}
+2024-09-05 20:49:21 - adding data to queue
+2024-09-05 20:49:21 - *****HOST received data from backend*****:  intended
+2024-09-05 20:49:21 - Output from send_msg: {"ai_response_chunk": " intended"}
+2024-09-05 20:49:21 - adding data to queue
+2024-09-05 20:49:21 - *****HOST received data from backend*****:  for
+2024-09-05 20:49:21 - Output from send_msg: {"ai_response_chunk": " for"}
+2024-09-05 20:49:21 - adding data to queue
+2024-09-05 20:49:21 - *****HOST received data from backend*****:  use
+2024-09-05 20:49:21 - Output from send_msg: {"ai_response_chunk": " use"}
+2024-09-05 20:49:21 - adding data to queue
+2024-09-05 20:49:22 - *****HOST received data from backend*****:  in
+2024-09-05 20:49:22 - Output from send_msg: {"ai_response_chunk": " in"}
+2024-09-05 20:49:22 - adding data to queue
+2024-09-05 20:49:22 - *****HOST received data from backend*****:  illustr
+2024-09-05 20:49:22 - Output from send_msg: {"ai_response_chunk": " illustr"}
+2024-09-05 20:49:22 - adding data to queue
+2024-09-05 20:49:22 - *****HOST received data from backend*****: ative
+2024-09-05 20:49:22 - Output from send_msg: {"ai_response_chunk": "ative"}
+2024-09-05 20:49:22 - adding data to queue
+2024-09-05 20:49:22 - *****HOST received data from backend*****:  examples
+2024-09-05 20:49:22 - Output from send_msg: {"ai_response_chunk": " examples"}
+2024-09-05 20:49:22 - adding data to queue
+2024-09-05 20:49:22 - *****HOST received data from backend*****:  in
+2024-09-05 20:49:22 - Output from send_msg: {"ai_response_chunk": " in"}
+2024-09-05 20:49:22 - adding data to queue
+2024-09-05 20:49:22 - *****HOST received data from backend*****:  documents
+2024-09-05 20:49:22 - Output from send_msg: {"ai_response_chunk": " documents"}
+2024-09-05 20:49:23 - adding data to queue
+2024-09-05 20:49:23 - *****HOST received data from backend*****: .
+2024-09-05 20:49:23 - Output from send_msg: {"ai_response_chunk": "."}
+2024-09-05 20:49:23 - adding data to queue
+2024-09-05 20:49:23 - *****HOST received data from backend*****:  It
+2024-09-05 20:49:23 - Output from send_msg: {"ai_response_chunk": " It"}
+2024-09-05 20:49:23 - adding data to queue
+2024-09-05 20:49:23 - *****HOST received data from backend*****:  can
+2024-09-05 20:49:23 - Output from send_msg: {"ai_response_chunk": " can"}
+2024-09-05 20:49:23 - adding data to queue
+2024-09-05 20:49:23 - *****HOST received data from backend*****:  be
+2024-09-05 20:49:23 - Output from send_msg: {"ai_response_chunk": " be"}
+2024-09-05 20:49:23 - adding data to queue
+2024-09-05 20:49:23 - *****HOST received data from backend*****:  used
+2024-09-05 20:49:23 - Output from send_msg: {"ai_response_chunk": " used"}
+2024-09-05 20:49:23 - adding data to queue
+2024-09-05 20:49:24 - *****HOST received data from backend*****:  without
+2024-09-05 20:49:24 - Output from send_msg: {"ai_response_chunk": " without"}
+2024-09-05 20:49:24 - adding data to queue
+2024-09-05 20:49:24 - *****HOST received data from backend*****:  prior
+2024-09-05 20:49:24 - Output from send_msg: {"ai_response_chunk": " prior"}
+2024-09-05 20:49:24 - adding data to queue
+2024-09-05 20:49:24 - *****HOST received data from backend*****:  coord
+2024-09-05 20:49:24 - Output from send_msg: {"ai_response_chunk": " coord"}
+2024-09-05 20:49:24 - adding data to queue
+2024-09-05 20:49:24 - *****HOST received data from backend*****: ination
+2024-09-05 20:49:24 - Output from send_msg: {"ai_response_chunk": "ination"}
+2024-09-05 20:49:24 - adding data to queue
+2024-09-05 20:49:24 - *****HOST received data from backend*****:  or
+2024-09-05 20:49:24 - Output from send_msg: {"ai_response_chunk": " or"}
+2024-09-05 20:49:24 - adding data to queue
+2024-09-05 20:49:24 - *****HOST received data from backend*****:  permission
+2024-09-05 20:49:24 - Output from send_msg: {"ai_response_chunk": " permission"}
+2024-09-05 20:49:24 - adding data to queue
+2024-09-05 20:49:25 - *****HOST received data from backend*****: .
+2024-09-05 20:49:25 - Output from send_msg: {"ai_response_chunk": "."}
+2024-09-05 20:49:25 - adding data to queue
+2024-09-05 20:49:25 - *****HOST received data from backend*****:  More
+2024-09-05 20:49:25 - Output from send_msg: {"ai_response_chunk": " More"}
+2024-09-05 20:49:25 - adding data to queue
+2024-09-05 20:49:25 - *****HOST received data from backend*****:  information
+2024-09-05 20:49:25 - Output from send_msg: {"ai_response_chunk": " information"}
+2024-09-05 20:49:25 - adding data to queue
+2024-09-05 20:49:25 - *****HOST received data from backend*****:  is
+2024-09-05 20:49:25 - Output from send_msg: {"ai_response_chunk": " is"}
+2024-09-05 20:49:25 - adding data to queue
+2024-09-05 20:49:25 - *****HOST received data from backend*****:  available
+2024-09-05 20:49:25 - Output from send_msg: {"ai_response_chunk": " available"}
+2024-09-05 20:49:25 - adding data to queue
+2024-09-05 20:49:25 - *****HOST received data from backend*****: .
+2024-09-05 20:49:25 - Output from send_msg: {"ai_response_chunk": "."}
+2024-09-05 20:49:26 - Out: [{'text': ' This domain is intended for use in illustrative examples in documents. It can be used without prior coordination or permission. More information is available.', 'finish_reason': 'stop'}]
+2024-09-05 20:49:26 - returned data
+2024-09-05 20:49:26 -  This domain is intended for use in illustrative examples in documents. It can be used without prior coordination or permission. More information is available.
+2024-09-05 20:49:26 - Output from send_msg: {"ai_response": " This domain is intended for use in illustrative examples in documents. It can be used without prior coordination or permission. More information is available."}
+2024-09-05 20:50:55 - kcpp_api module imported
+2024-09-05 20:50:55 - Native-messaging-host moduule ACTIVE
+2024-09-05 20:50:55 - kcpp_api module imported
+2024-09-05 20:50:55 - Native-messaging-host moduule ACTIVE
+2024-09-05 20:50:55 - Deleted previous conversation history: conv_history.txt
+2024-09-05 20:50:55 - ***********call_handle_message func IS ACTIVE*********
+2024-09-05 20:50:55 - **************SEND CHUNKS IS ACTIVE***************
+2024-09-05 20:50:55 - **************SEND CHUNKS IS ACTIVE***************
+2024-09-05 20:50:55 - Input: "read_message func active"
+2024-09-05 20:50:55 - Input: "read_message func active"
+2024-09-05 20:50:56 - received data from extension: {"data":{"status":"new_chat","task":"summary","text":"summarise this webpage\n    \n    This domain is for use in illustrative examples in documents. You may use this\n    domain in literature without prior coordination or asking for permission.\n    More information...\n"}}
+2024-09-05 20:50:56 - Output from send_msg: {"echo message from native host": "{\"data\":{\"status\":\"new_chat\",\"task\":\"summary\",\"text\":\"summarise this webpage\\n    \\n    This domain is for use in illustrative examples in documents. You may use this\\n    domain in literature without prior coordination or asking for permission.\\n    More information...\\n\"}}"}
+2024-09-05 20:50:56 - output: " backend module is ACTIVE"
+2024-09-05 20:50:56 - user_message bah: {'data': {'status': 'new_chat', 'task': 'summary', 'text': 'summarise this webpage\n    \n    This domain is for use in illustrative examples in documents. You may use this\n    domain in literature without prior coordination or asking for permission.\n    More information...\n'}}
+2024-09-05 20:50:56 - New chat detected. Clearing conversation history.
+2024-09-05 20:50:56 - Cleared conversation history file: conv_history.txt
+2024-09-05 20:50:56 - adding data to queue
+2024-09-05 20:50:56 - *****HOST received data from backend*****:  This
+2024-09-05 20:50:56 - Output from send_msg: {"ai_response_chunk": " This"}
+2024-09-05 20:50:57 - adding data to queue
+2024-09-05 20:50:57 - *****HOST received data from backend*****:  domain
+2024-09-05 20:50:57 - Output from send_msg: {"ai_response_chunk": " domain"}
+2024-09-05 20:50:57 - adding data to queue
+2024-09-05 20:50:57 - *****HOST received data from backend*****:  is
+2024-09-05 20:50:57 - Output from send_msg: {"ai_response_chunk": " is"}
+2024-09-05 20:50:57 - adding data to queue
+2024-09-05 20:50:57 - *****HOST received data from backend*****:  intended
+2024-09-05 20:50:57 - Output from send_msg: {"ai_response_chunk": " intended"}
+2024-09-05 20:50:57 - adding data to queue
+2024-09-05 20:50:57 - *****HOST received data from backend*****:  for
+2024-09-05 20:50:57 - Output from send_msg: {"ai_response_chunk": " for"}
+2024-09-05 20:50:57 - adding data to queue
+2024-09-05 20:50:57 - *****HOST received data from backend*****:  use
+2024-09-05 20:50:57 - Output from send_msg: {"ai_response_chunk": " use"}
+2024-09-05 20:50:58 - adding data to queue
+2024-09-05 20:50:58 - *****HOST received data from backend*****:  in
+2024-09-05 20:50:58 - Output from send_msg: {"ai_response_chunk": " in"}
+2024-09-05 20:50:58 - adding data to queue
+2024-09-05 20:50:58 - *****HOST received data from backend*****:  illustr
+2024-09-05 20:50:58 - Output from send_msg: {"ai_response_chunk": " illustr"}
+2024-09-05 20:50:58 - adding data to queue
+2024-09-05 20:50:58 - *****HOST received data from backend*****: ative
+2024-09-05 20:50:58 - Output from send_msg: {"ai_response_chunk": "ative"}
+2024-09-05 20:50:58 - adding data to queue
+2024-09-05 20:50:58 - *****HOST received data from backend*****:  examples
+2024-09-05 20:50:58 - Output from send_msg: {"ai_response_chunk": " examples"}
+2024-09-05 20:50:58 - adding data to queue
+2024-09-05 20:50:58 - *****HOST received data from backend*****:  in
+2024-09-05 20:50:58 - Output from send_msg: {"ai_response_chunk": " in"}
+2024-09-05 20:50:58 - adding data to queue
+2024-09-05 20:50:58 - *****HOST received data from backend*****:  documents
+2024-09-05 20:50:58 - Output from send_msg: {"ai_response_chunk": " documents"}
+2024-09-05 20:50:59 - adding data to queue
+2024-09-05 20:50:59 - *****HOST received data from backend*****: .
+2024-09-05 20:50:59 - Output from send_msg: {"ai_response_chunk": "."}
+2024-09-05 20:50:59 - adding data to queue
+2024-09-05 20:50:59 - *****HOST received data from backend*****:  It
+2024-09-05 20:50:59 - Output from send_msg: {"ai_response_chunk": " It"}
+2024-09-05 20:50:59 - adding data to queue
+2024-09-05 20:50:59 - *****HOST received data from backend*****:  can
+2024-09-05 20:50:59 - Output from send_msg: {"ai_response_chunk": " can"}
+2024-09-05 20:50:59 - adding data to queue
+2024-09-05 20:50:59 - *****HOST received data from backend*****:  be
+2024-09-05 20:50:59 - Output from send_msg: {"ai_response_chunk": " be"}
+2024-09-05 20:50:59 - adding data to queue
+2024-09-05 20:50:59 - *****HOST received data from backend*****:  used
+2024-09-05 20:50:59 - Output from send_msg: {"ai_response_chunk": " used"}
+2024-09-05 20:50:59 - adding data to queue
+2024-09-05 20:50:59 - *****HOST received data from backend*****:  without
+2024-09-05 20:50:59 - Output from send_msg: {"ai_response_chunk": " without"}
+2024-09-05 20:51:00 - adding data to queue
+2024-09-05 20:51:00 - *****HOST received data from backend*****:  prior
+2024-09-05 20:51:00 - Output from send_msg: {"ai_response_chunk": " prior"}
+2024-09-05 20:51:00 - adding data to queue
+2024-09-05 20:51:00 - *****HOST received data from backend*****:  coord
+2024-09-05 20:51:00 - Output from send_msg: {"ai_response_chunk": " coord"}
+2024-09-05 20:51:00 - adding data to queue
+2024-09-05 20:51:00 - *****HOST received data from backend*****: ination
+2024-09-05 20:51:00 - Output from send_msg: {"ai_response_chunk": "ination"}
+2024-09-05 20:51:00 - adding data to queue
+2024-09-05 20:51:00 - *****HOST received data from backend*****:  or
+2024-09-05 20:51:00 - Output from send_msg: {"ai_response_chunk": " or"}
+2024-09-05 20:51:00 - adding data to queue
+2024-09-05 20:51:00 - *****HOST received data from backend*****:  permission
+2024-09-05 20:51:00 - Output from send_msg: {"ai_response_chunk": " permission"}
+2024-09-05 20:51:01 - adding data to queue
+2024-09-05 20:51:01 - *****HOST received data from backend*****: .
+2024-09-05 20:51:01 - Output from send_msg: {"ai_response_chunk": "."}
+2024-09-05 20:51:01 - adding data to queue
+2024-09-05 20:51:01 - *****HOST received data from backend*****:  More
+2024-09-05 20:51:01 - Output from send_msg: {"ai_response_chunk": " More"}
+2024-09-05 20:51:01 - adding data to queue
+2024-09-05 20:51:01 - *****HOST received data from backend*****:  information
+2024-09-05 20:51:01 - Output from send_msg: {"ai_response_chunk": " information"}
+2024-09-05 20:51:01 - adding data to queue
+2024-09-05 20:51:01 - *****HOST received data from backend*****:  is
+2024-09-05 20:51:01 - Output from send_msg: {"ai_response_chunk": " is"}
+2024-09-05 20:51:01 - adding data to queue
+2024-09-05 20:51:01 - *****HOST received data from backend*****:  available
+2024-09-05 20:51:01 - Output from send_msg: {"ai_response_chunk": " available"}
+2024-09-05 20:51:01 - adding data to queue
+2024-09-05 20:51:01 - *****HOST received data from backend*****: .
+2024-09-05 20:51:01 - Output from send_msg: {"ai_response_chunk": "."}
+2024-09-05 20:51:02 - Out: [{'text': ' This domain is intended for use in illustrative examples in documents. It can be used without prior coordination or permission. More information is available.', 'finish_reason': 'stop'}]
+2024-09-05 20:51:02 - returned data
+2024-09-05 20:51:02 -  This domain is intended for use in illustrative examples in documents. It can be used without prior coordination or permission. More information is available.
+2024-09-05 20:51:02 - Output from send_msg: {"ai_response": " This domain is intended for use in illustrative examples in documents. It can be used without prior coordination or permission. More information is available."}
+2024-09-05 20:51:43 - kcpp_api module imported
+2024-09-05 20:51:43 - Native-messaging-host moduule ACTIVE
+2024-09-05 20:51:43 - Deleted previous conversation history: conv_history.txt
+2024-09-05 20:51:43 - ***********call_handle_message func IS ACTIVE*********
+2024-09-05 20:51:43 - **************SEND CHUNKS IS ACTIVE***************
+2024-09-05 20:51:43 - Input: "read_message func active"
+2024-09-05 20:51:43 - kcpp_api module imported
+2024-09-05 20:51:43 - Native-messaging-host moduule ACTIVE
+2024-09-05 20:51:43 - ***********call_handle_message func IS ACTIVE*********
+2024-09-05 20:51:43 - **************SEND CHUNKS IS ACTIVE***************
+2024-09-05 20:51:43 - Input: "read_message func active"
+2024-09-05 20:51:44 - received data from extension: {"data":{"status":"new_chat","task":"summary","text":"summarise this webpage\n    \n    This domain is for use in illustrative examples in documents. You may use this\n    domain in literature without prior coordination or asking for permission.\n    More information...\n"}}
+2024-09-05 20:51:44 - Output from send_msg: {"echo message from native host": "{\"data\":{\"status\":\"new_chat\",\"task\":\"summary\",\"text\":\"summarise this webpage\\n    \\n    This domain is for use in illustrative examples in documents. You may use this\\n    domain in literature without prior coordination or asking for permission.\\n    More information...\\n\"}}"}
+2024-09-05 20:51:44 - output: " backend module is ACTIVE"
+2024-09-05 20:51:44 - user_message bah: {'data': {'status': 'new_chat', 'task': 'summary', 'text': 'summarise this webpage\n    \n    This domain is for use in illustrative examples in documents. You may use this\n    domain in literature without prior coordination or asking for permission.\n    More information...\n'}}
+2024-09-05 20:51:44 - New chat detected. Clearing conversation history.
+2024-09-05 20:51:44 - Cleared conversation history file: conv_history.txt
+2024-09-05 20:51:44 - adding data to queue
+2024-09-05 20:51:44 - *****HOST received data from backend*****:  This
+2024-09-05 20:51:44 - Output from send_msg: {"ai_response_chunk": " This"}
+2024-09-05 20:51:45 - adding data to queue
+2024-09-05 20:51:45 - *****HOST received data from backend*****:  domain
+2024-09-05 20:51:45 - Output from send_msg: {"ai_response_chunk": " domain"}
+2024-09-05 20:51:45 - adding data to queue
+2024-09-05 20:51:45 - *****HOST received data from backend*****:  is
+2024-09-05 20:51:45 - Output from send_msg: {"ai_response_chunk": " is"}
+2024-09-05 20:51:45 - adding data to queue
+2024-09-05 20:51:45 - *****HOST received data from backend*****:  intended
+2024-09-05 20:51:45 - Output from send_msg: {"ai_response_chunk": " intended"}
+2024-09-05 20:51:45 - adding data to queue
+2024-09-05 20:51:45 - *****HOST received data from backend*****:  for
+2024-09-05 20:51:45 - Output from send_msg: {"ai_response_chunk": " for"}
+2024-09-05 20:51:45 - adding data to queue
+2024-09-05 20:51:45 - *****HOST received data from backend*****:  use
+2024-09-05 20:51:45 - Output from send_msg: {"ai_response_chunk": " use"}
+2024-09-05 20:51:46 - adding data to queue
+2024-09-05 20:51:46 - *****HOST received data from backend*****:  in
+2024-09-05 20:51:46 - Output from send_msg: {"ai_response_chunk": " in"}
+2024-09-05 20:51:46 - adding data to queue
+2024-09-05 20:51:46 - *****HOST received data from backend*****:  illustr
+2024-09-05 20:51:46 - Output from send_msg: {"ai_response_chunk": " illustr"}
+2024-09-05 20:51:46 - adding data to queue
+2024-09-05 20:51:46 - *****HOST received data from backend*****: ative
+2024-09-05 20:51:46 - Output from send_msg: {"ai_response_chunk": "ative"}
+2024-09-05 20:51:46 - adding data to queue
+2024-09-05 20:51:46 - *****HOST received data from backend*****:  examples
+2024-09-05 20:51:46 - Output from send_msg: {"ai_response_chunk": " examples"}
+2024-09-05 20:51:46 - adding data to queue
+2024-09-05 20:51:46 - *****HOST received data from backend*****:  in
+2024-09-05 20:51:46 - Output from send_msg: {"ai_response_chunk": " in"}
+2024-09-05 20:51:46 - adding data to queue
+2024-09-05 20:51:46 - *****HOST received data from backend*****:  documents
+2024-09-05 20:51:46 - Output from send_msg: {"ai_response_chunk": " documents"}
+2024-09-05 20:51:47 - adding data to queue
+2024-09-05 20:51:47 - *****HOST received data from backend*****: .
+2024-09-05 20:51:47 - Output from send_msg: {"ai_response_chunk": "."}
+2024-09-05 20:51:47 - adding data to queue
+2024-09-05 20:51:47 - *****HOST received data from backend*****:  It
+2024-09-05 20:51:47 - Output from send_msg: {"ai_response_chunk": " It"}
+2024-09-05 20:51:47 - adding data to queue
+2024-09-05 20:51:47 - *****HOST received data from backend*****:  can
+2024-09-05 20:51:47 - Output from send_msg: {"ai_response_chunk": " can"}
+2024-09-05 20:51:47 - adding data to queue
+2024-09-05 20:51:47 - *****HOST received data from backend*****:  be
+2024-09-05 20:51:47 - Output from send_msg: {"ai_response_chunk": " be"}
+2024-09-05 20:51:47 - adding data to queue
+2024-09-05 20:51:47 - *****HOST received data from backend*****:  used
+2024-09-05 20:51:47 - Output from send_msg: {"ai_response_chunk": " used"}
+2024-09-05 20:51:47 - adding data to queue
+2024-09-05 20:51:47 - *****HOST received data from backend*****:  without
+2024-09-05 20:51:47 - Output from send_msg: {"ai_response_chunk": " without"}
+2024-09-05 20:51:48 - adding data to queue
+2024-09-05 20:51:48 - *****HOST received data from backend*****:  prior
+2024-09-05 20:51:48 - Output from send_msg: {"ai_response_chunk": " prior"}
+2024-09-05 20:51:48 - adding data to queue
+2024-09-05 20:51:48 - *****HOST received data from backend*****:  coord
+2024-09-05 20:51:48 - Output from send_msg: {"ai_response_chunk": " coord"}
+2024-09-05 20:51:48 - adding data to queue
+2024-09-05 20:51:48 - *****HOST received data from backend*****: ination
+2024-09-05 20:51:48 - Output from send_msg: {"ai_response_chunk": "ination"}
+2024-09-05 20:51:48 - adding data to queue
+2024-09-05 20:51:48 - *****HOST received data from backend*****:  or
+2024-09-05 20:51:48 - Output from send_msg: {"ai_response_chunk": " or"}
+2024-09-05 20:51:48 - adding data to queue
+2024-09-05 20:51:48 - *****HOST received data from backend*****:  permission
+2024-09-05 20:51:48 - Output from send_msg: {"ai_response_chunk": " permission"}
+2024-09-05 20:51:49 - adding data to queue
+2024-09-05 20:51:49 - *****HOST received data from backend*****: .
+2024-09-05 20:51:49 - Output from send_msg: {"ai_response_chunk": "."}
+2024-09-05 20:51:49 - adding data to queue
+2024-09-05 20:51:49 - *****HOST received data from backend*****:  More
+2024-09-05 20:51:49 - Output from send_msg: {"ai_response_chunk": " More"}
+2024-09-05 20:51:49 - adding data to queue
+2024-09-05 20:51:49 - *****HOST received data from backend*****:  information
+2024-09-05 20:51:49 - Output from send_msg: {"ai_response_chunk": " information"}
+2024-09-05 20:51:49 - adding data to queue
+2024-09-05 20:51:49 - *****HOST received data from backend*****:  is
+2024-09-05 20:51:49 - Output from send_msg: {"ai_response_chunk": " is"}
+2024-09-05 20:51:49 - adding data to queue
+2024-09-05 20:51:49 - *****HOST received data from backend*****:  available
+2024-09-05 20:51:49 - Output from send_msg: {"ai_response_chunk": " available"}
+2024-09-05 20:51:49 - adding data to queue
+2024-09-05 20:51:50 - *****HOST received data from backend*****: .
+2024-09-05 20:51:50 - Output from send_msg: {"ai_response_chunk": "."}
+2024-09-05 20:51:50 - Out: [{'text': ' This domain is intended for use in illustrative examples in documents. It can be used without prior coordination or permission. More information is available.', 'finish_reason': 'stop'}]
+2024-09-05 20:51:50 - returned data
+2024-09-05 20:51:50 -  This domain is intended for use in illustrative examples in documents. It can be used without prior coordination or permission. More information is available.
+2024-09-05 20:51:50 - Output from send_msg: {"ai_response": " This domain is intended for use in illustrative examples in documents. It can be used without prior coordination or permission. More information is available."}
+2024-09-05 20:52:17 - received data from extension: {"data":{"status":"new_chat","task":"chat","text":"hi"}}
+2024-09-05 20:52:17 - Output from send_msg: {"echo message from native host": "{\"data\":{\"status\":\"new_chat\",\"task\":\"chat\",\"text\":\"hi\"}}"}
+2024-09-05 20:52:17 - output: " backend module is ACTIVE"
+2024-09-05 20:52:17 - user_message bah: {'data': {'status': 'new_chat', 'task': 'chat', 'text': 'hi'}}
+2024-09-05 20:52:17 - New chat detected. Clearing conversation history.
+2024-09-05 20:52:17 - Cleared conversation history file: conv_history.txt
+2024-09-05 20:52:17 - adding data to queue
+2024-09-05 20:52:17 - *****HOST received data from backend*****:  Hello
+2024-09-05 20:52:17 - Output from send_msg: {"ai_response_chunk": " Hello"}
+2024-09-05 20:52:17 - adding data to queue
+2024-09-05 20:52:17 - *****HOST received data from backend*****: !
+2024-09-05 20:52:17 - Output from send_msg: {"ai_response_chunk": "!"}
+2024-09-05 20:52:18 - adding data to queue
+2024-09-05 20:52:18 - *****HOST received data from backend*****:  How
+2024-09-05 20:52:18 - Output from send_msg: {"ai_response_chunk": " How"}
+2024-09-05 20:52:18 - adding data to queue
+2024-09-05 20:52:18 - *****HOST received data from backend*****:  can
+2024-09-05 20:52:18 - Output from send_msg: {"ai_response_chunk": " can"}
+2024-09-05 20:52:18 - adding data to queue
+2024-09-05 20:52:18 - *****HOST received data from backend*****:  I
+2024-09-05 20:52:18 - Output from send_msg: {"ai_response_chunk": " I"}
+2024-09-05 20:52:18 - adding data to queue
+2024-09-05 20:52:18 - *****HOST received data from backend*****:  help
+2024-09-05 20:52:18 - Output from send_msg: {"ai_response_chunk": " help"}
+2024-09-05 20:52:18 - adding data to queue
+2024-09-05 20:52:18 - *****HOST received data from backend*****:  you
+2024-09-05 20:52:18 - Output from send_msg: {"ai_response_chunk": " you"}
+2024-09-05 20:52:18 - adding data to queue
+2024-09-05 20:52:18 - *****HOST received data from backend*****:  today
+2024-09-05 20:52:18 - Output from send_msg: {"ai_response_chunk": " today"}
+2024-09-05 20:52:19 - adding data to queue
+2024-09-05 20:52:19 - *****HOST received data from backend*****: ?
+2024-09-05 20:52:19 - Output from send_msg: {"ai_response_chunk": "?"}
+2024-09-05 20:52:19 - Out: [{'text': ' Hello! How can I help you today?', 'finish_reason': 'stop'}]
+2024-09-05 20:52:19 - returned data
+2024-09-05 20:52:19 -  Hello! How can I help you today?
+2024-09-05 20:52:19 - Output from send_msg: {"ai_response": " Hello! How can I help you today?"}

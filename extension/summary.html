@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link rel="stylesheet" href="styles.css">
+    <script type="module" src="summary.js" defer></script>
+    
+    <style>        
+        body {
+            width: 500px;
+            height: 500px;
+            display: flex;
+            flex-direction: column;
+            margin: 0;
+            padding: 0;
+
+        .container {
+            flex-grow: 1;
+            overflow-y: auto;
+            padding: 10px;
+        }
+        
+        }
+
+        #tab_name {
+            max-width: 200px; /* Adjust this value as needed */
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+    </style>
+</head>
+<body>  
+  <div class="header">
+    <button class="back-button" > back </button>
+     <!-- Each &nbsp; represents a single space. -->
+    <h1> &nbsp; Summarising &nbsp;</h1>
+    <h1 id="tab_name">a</h>
+</div>
+    <div class="container">
+        <p id="summary-paragraph"></p>
+       
+    </div>
+    <div class="input-container">
+        <input type="text" placeholder="Ask" id="question-input">
+        <button id="send-button">Send</button>
+    </div>
+</body>
+
+</html>
