@@ -79,6 +79,18 @@ button:hover {
   background-color: #62cf34;
 }
 
+#send-button {
+  display: flex;
+  align-items: center; /* Vertically centers the text and image */
+  justify-content: center; /* Horizontally centers the content */
+  border: solid;
+  border-color: white;
+  padding: 5px 10px; /* Adjust padding as needed */
+}
+
+
+
+
 .header {
   display: flex;
   align-items: center;

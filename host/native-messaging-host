@@ -75,8 +75,7 @@ def call_handle_message():
         data = global_data
         if prev_data != data and data !=None:
             prev_data=data      
-            try:
-              #TODO: try passing a queue to the module here              
+            try:        
               textobj = ai.handle_message(prev_data,q)
               text = textobj[0]['text']
               logging.info("returned data")  

@@ -1,36 +1,35 @@
 let message;
+// establishing connection so we can listen to background.js without the user sending anything in the text box, just a lazy hack
+summarybgcon()
+
+console.log("***********summary page is active*****");
 
 function append(msg) {
-  // object structure:
-  // {
-  //   "echo message from native host": {
-  //     "data": {
-  //       "text": "gg"
-  //     }
-  //   }
-  // }
-  console.log("This is from the append func:");
-  console.log(msg);
-
+  console.log("This is from the append func:", msg);
   let textToAppend = '';
 
   if (msg && msg["echo message from native host"] && msg["echo message from native host"].data) {
-      textToAppend = msg["echo message from native host"].data.text || 'No text found';
-  } else if (msg && msg["echo message from native host"] && msg["echo message from native host"].data) {
-      textToAppend = msg["echo message from native host"].data.text || 'No text found';
-  } else if (msg.ai_response) {
-      console.log("full msg:", msg.ai_response);
-    // textToAppend = msg.ai_response || 'No AI response found';
-  } else if(msg.ai_response_chunk){
-      textToAppend = msg.ai_response_chunk || 'No AI response found';
-  }else {
-      textToAppend = 'Unexpected message format';
+    textToAppend = msg["echo message from native host"].data.text || 'No text found';
+  }else if (msg.ai_response) {
+    console.log("full msg:", msg.ai_response);
+  }else if (msg.ai_response_chunk) {
+    textToAppend = msg.ai_response_chunk || 'No AI response found';
+  } else {
+    textToAppend = 'Unexpected message format';
   }
 
   console.log("Text to append:", textToAppend);
-  const pTag = document.getElementById('summary-paragraph');
-  if (pTag) {
-      pTag.textContent += textToAppend + '\n';
+
+  const summaryDiv = document.querySelector('.summary-content');
+  const spinner = document.querySelector('.spinner');
+  const processingtxt = document.querySelector('.processingtxt');
+  if (summaryDiv) {
+    spinner.style.display = 'none';
+    processingtxt.style.display = 'none';
+    summaryDiv.textContent += textToAppend;
+    summaryDiv.scrollTop = summaryDiv.scrollHeight;
+  } else {
+    console.error("Couldn't find the .summary-content div");
   }
 }
 
@@ -75,11 +74,12 @@ function bgcon(task){
   try{
     const portbg = chrome.runtime.connect({ name: "summary<->background" });
     if(task==1){
+        document.querySelector('.spinner').style.display = 'block';
         message = { status: "old_chat",task:"summary",text: document.getElementById('question-input').value };
         console.log("summarypage input box content", message)
         portbg.postMessage(message);
     }else{
-      portbg.postMessage("summarypage something  went wrong");
+      portbg.postMessage("summarypage error");
     }
 
     portbg.onMessage.addListener((smsg) => {
@@ -93,3 +93,14 @@ function bgcon(task){
   }  
 }
 
+function summarybgcon(){
+  const portbg = chrome.runtime.connect({ name: "summary<->background" });
+  portbg.postMessage("initialize");
+
+  document.querySelector('.spinner').style.display = 'block';
+  portbg.onMessage.addListener((smsg) => {
+    console.log("summary page Received message from service worker:", smsg);
+    console.log('Received message: <b>' + JSON.stringify(smsg) + '</b>');
+    append(smsg)
+ })
+}

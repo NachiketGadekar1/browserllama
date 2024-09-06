@@ -45,7 +45,7 @@ function sendExtractedNativeMessage() {
         console.error("Error retrieving from storage:", chrome.runtime.lastError);
       }else {
           // console.log("textcontent:",result.extract.textContent)
-          data = {"data":{ status: "new_chat",task:"summary",text: "summarise this webpage" + result.extract.textContent }}
+          data = {"data":{ status: "new_chat",task:"summary",text: "The following text is extracted from a webpage. Please read the content and provide a concise summary highlighting the main points, key details, and important insights. Make sure the summary is clear, accurate, and easy to understand. Keep the summary under 150 words. Webpage Content:" + result.extract.textContent }}
           port.postMessage(data);
           if (result) {
             console.log("Retrieved data from storage:", result);
@@ -81,17 +81,19 @@ function connect() {
 function forwardtopopup(data) {
   if (portbg) {
     try{
-    portbg.postMessage(data);
-  }catch(error){
-    console.log("forwardtopopup error:", error)
+      portbg.postMessage(data);
+    }catch(error){
+      console.log("forwardtopopup error:", error)
   }
 }
 }
 
 function forward_to_summarise_page(data) {
+  console.log("***********forward_to_summarise_page() is active*************")
   if (portsumpg) {
     try{
-    portsumpg.postMessage(data);
+      console.log("data to be sent is:",data)
+      portsumpg.postMessage(data);
     }catch(error){
       console.log("portsumpg.postMessage(data); error:", error)
     }
@@ -138,12 +140,15 @@ chrome.runtime.onConnect.addListener((port) => {
   port.onMessage.addListener((portmsg2) => {
     console.log(" background.js received text from summarypage: ", portmsg2);
     receivedMsgFromComponent = portmsg2
-    try {
-      sendNativeMessage(portmsg2);
-    } catch (error) {
-      console.error("Error sending native message:", error);
-      port.postMessage({ error: "Failed to send native message" });
-    }
+    if(portmsg2 == "initialize"){
+      console.log("initalized connection")
+    }else{
+      try {
+          sendNativeMessage(portmsg2);
+      } catch (error) {
+          console.error("Error sending native message:", error);
+          port.postMessage({ error: "Failed to send native message" });
+    }}
   });
 })
 
@@ -172,21 +177,25 @@ function onNativeMessage(msg) {
   if (msg["echo message from native host"]) {
     console.log("Received echo message from native host");
   } else {
-    console.log("Received AI response from native host");
     handleAIResponse(msg);
   }
 }
 
 function handleAIResponse(msg) {
+  console.log("***********handleairesponse() is active*************")
   try {
-    if(receivedMsgFromComponent.task == "chat"){
-      forward_to_chat_page(msg);
-    }else if(receivedMsgFromComponent.task == "summary"){
-      forward_to_summarise_page(msg);
+    if(receivedMsgFromComponent && typeof receivedMsgFromComponent === 'object' && 'task' in receivedMsgFromComponent){
+      if(receivedMsgFromComponent.task == "chat"){
+        forward_to_chat_page(msg);
+      }else{
+        console.log("handleairesponse else cond")
+        // forwardtopopup(msg);      
+        forward_to_summarise_page(msg);
+      }
     }else{
-      console.log("handleairesponse else cond")
-      // forwardtopopup(msg);      
-    }
+      console.log("sending to summary page func")
+      forward_to_summarise_page(msg);
+    }  
   }catch(error) {
     console.log("Error forwarding AI response:", error);
   }
