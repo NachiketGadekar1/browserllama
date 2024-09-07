@@ -22,10 +22,8 @@ function append(msg) {
 
   const summaryDiv = document.querySelector('.summary-content');
   const spinner = document.querySelector('.spinner');
-  const processingtxt = document.querySelector('.processingtxt');
   if (summaryDiv) {
     spinner.style.display = 'none';
-    processingtxt.style.display = 'none';
     summaryDiv.textContent += textToAppend;
     summaryDiv.scrollTop = summaryDiv.scrollHeight;
   } else {
@@ -85,8 +83,7 @@ function bgcon(task){
     portbg.onMessage.addListener((smsg) => {
         console.log("summary page Received message from service worker:", smsg);
         console.log('Received message: <b>' + JSON.stringify(smsg) + '</b>');
-        append(smsg)
-        
+        append(smsg)        
       });
   }catch(error){
     console.log("bgcon error:",error)

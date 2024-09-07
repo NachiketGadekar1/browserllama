@@ -6,7 +6,6 @@ import logging
 import os
 import json
 
-#This probably isnt needed,the code is writing to log of the native_messaging_host module 
 logging.basicConfig(filename='kcpp_api.log', level=logging.INFO, 
                     format='%(asctime)s - %(message)s', datefmt='%Y-%m-%d %H:%M:%S')
 logging.info("kcpp_api module imported")
@@ -51,22 +50,23 @@ class kcpp_api:
 
     def get_prompt(self, text):  
         return {
-            "prompt": self.conversation_history +f"{self.username}: {text}\n{self.botname}:",
+            # "prompt": self.conversation_history +f"{self.username}: {text}\n{self.botname}:",
+            "prompt": self.conversation_history + f"### Instruction:\n{text}\n### Response:\n",
             "use_story": False,
             "use_memory": True,
             "use_authors_note": False,
             "use_world_info": False,
-            "max_context_length": 2048,
+            "max_context_length": 4096,
             "max_length": 200,
-            "rep_pen": 1.0,
-            "rep_pen_range": 2048,
+            "rep_pen": 1.1,
+            "rep_pen_range": 4096,
             "rep_pen_slope": 0.7,
-            "temperature": 0.5,
+            "temperature": 0.74,
             "tfs": 0.97,
             "top_a": 0.8,
-            "top_k": 0,
+            "top_k": 100,
             "top_p": 0.92,
-            "typical": 0.19,
+            "typical": 1,
             "sampler_order": [6, 0, 1, 3, 4, 2, 5],
             "singleline": False,
             "frmttriminc": False,
@@ -92,6 +92,7 @@ class kcpp_api:
         
         def get_request():
             nonlocal previous_text
+            received_so_far = ""
             i=0
             try:
                 while not stop_event.is_set():
@@ -103,16 +104,25 @@ class kcpp_api:
                             i=i+1
                         elif 'results' in response_data and response_data['results']:
                             current_text = response_data['results'][0]['text']                    
-                            new_content = current_text[len(previous_text):]                    
+                            new_content = current_text[len(previous_text):]   
+                            logging.info(f"**NEW CONTENT **: {new_content}")        
+                            received_so_far += new_content
+                            logging.info(f"***received_so_far***: {received_so_far}")  
+                            # some models keep infintitely generating it own ###instruction and ###response, this aborts generation when that happens
+                            if new_content == '###' or '###' in received_so_far:
+                                logging.info(f"'###' found in the string: {new_content}")         
+                                abort = requests.post(f"{self.ENDPOINT}/api/extra/abort") 
+                                logging.info(f"abort:{abort}") 
+                                new_content = ' '
                             if new_content:       
-                                q.put(new_content)              
-                                logging.info(f"adding data to queue")                                
+                                q.put(new_content)                                             
                                 x=1               
                             previous_text = current_text
                     
                     time.sleep(0.1)
-            except:        
-                logging.info(f"---------------Error in get_request----------")
+            except Exception as e:
+                logging.error(f"---------------Error in get_request----------: {str(e)}")        
+
         
         get_thread = threading.Thread(target=get_request)
         get_thread.daemon = True
@@ -127,7 +137,8 @@ class kcpp_api:
             text = results[0]['text']
             response_text = self.split_text(text)[0]
             response_text = response_text.replace(" ", " ")
-            new_conversation = f"{self.username}: {only_text}\n{self.botname}: {response_text}\n"
+            # cahnge the format to match previous
+            new_conversation = f"### Instruction:\n{only_text}\n### Response:\n{response_text}\n"
             self.conversation_history += new_conversation
             with open(self.file_path, "a") as f:  
                 f.write(new_conversation) 
