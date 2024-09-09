@@ -2,6 +2,8 @@ import { Readability } from '@mozilla/readability';
 
 console.log("content script active");
 
+document.body.style.backgroundColor = "orange";
+
 const clonedDocument = document.cloneNode(true);
 
 const reader = new Readability(clonedDocument);
