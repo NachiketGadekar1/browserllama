@@ -2,7 +2,7 @@ let message;
 // establishing connection so we can listen to background.js without the user sending anything in the text box, just a lazy hack
 summarybgcon()
 
-console.log("***********summary page is active*****");
+console.log("*******summary page is active*****");
 
 function append(msg) {
   console.log("This is from the append func:", msg);

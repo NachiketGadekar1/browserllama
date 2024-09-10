@@ -5,89 +5,52 @@ let portbg;
 let portsumpg;
 let portchpg;
 let receivedMsgFromComponent
+let injectionFLag = false
 
 // TODO: add condition check for forward_to_summarise_page(msg) in handleairesponse()
 try{
     //listen for content-script message
     console.log("service worker active");
 
-    // inject content script when popup is clicked in current tab
     chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
-      if (request.action === "injectScript") {
-        chrome.tabs.query({active: true, currentWindow: true}, function(tabs) {
-          chrome.scripting.executeScript({
-            target: { tabId: tabs[0].id },
-            files: ["./dist/content-script.bundle.js"],
+    if (request.action === "connect") {
+        console.log("swrkr listenr:",request.action)
+        connect();
+        return true; // Indicates we want to send a response asynchronously
+    }else if(request.action === "inject"){
+        console.log("swrkr listenr:",request.action)
+        async function injectScript() {
+          const [tab] = await chrome.tabs.query({ active: true, currentWindow: true });
+          // console.log("TAB:",tab.id)
+          await chrome.scripting.executeScript({
+            target: { tabId: tab.id },
+            files: ['./dist/content-script.bundle.js']
           });
-        });
-      }
+          injectionFLag = true
+        }
+          injectScript();
+    }else{
+        console.log("invalid message",request.action)
+    }
+
+      extract = request;
+      console.log(sender.tab ?
+                  "from a content script:" + sender.tab.url :
+                  "from the extension");
+      console.log("this is the object received from content script: ", request);
+      // store extracted content using chrome.storage api
+      chrome.storage.session.set({extract}).then(() => {
+        if (chrome.runtime.lastError) {
+          console.error("Error saving to storage:", chrome.runtime.lastError);
+        }else {
+          console.log("Saved extract object to storage successfully!");
+        }
+      });
+      // use this to respond
+      if (request.url != "a")
+        sendResponse({farewell: "working"});
     });
 
-    chrome.runtime.onMessage.addListener(
-      function(request, sender, sendResponse) {
-        if (request.action === "connect") {
-          console.log("swrkr listenr")
-          connect();
-          return true; // Indicates we want to send a response asynchronously
-        }
-
-        extract = request;
-        console.log(sender.tab ?
-                    "from a content script:" + sender.tab.url :
-                    "from the extension");
-        console.log("this is the object received from content script: ", request);
-        // store extracted content using chrome.storage api
-        chrome.storage.session.set({extract}).then(() => {
-          if (chrome.runtime.lastError) {
-            console.error("Error saving to storage:", chrome.runtime.lastError);
-          }else {
-            console.log("Saved extract object to storage successfully!");
-          }
-        });
-        // use this to respond
-        if (request.url != "a")
-          sendResponse({farewell: "working"});
-      }
-    );
-
-    // function injectContentScript() {
-    // // Change the background color to indicate content script activity
-    // console.log("content script active");
-
-
-    // document.body.style.backgroundColor = "orange";
-    
-    // const clonedDocument = document.cloneNode(true);
-    
-    // const reader = new Readability(clonedDocument);
-    // const article = reader.parse();
-    
-    // // Function to clean the input text by replacing newline characters
-    // function cleanInput(text) {
-    //   return text ? text.replace(/\n+/g, ' ').trim() : '';
-    // }
-    
-    
-    // if (article) {
-    //     article.textContent = cleanInput(article.textContent); 
-    
-    //     console.log('Title:', article.title);
-    //     console.log('Content:', article.textContent);
-    
-    //     // Send data to background.js
-    //     (async () => {
-    //       try {
-    //         const response = await chrome.runtime.sendMessage(article); 
-    //         console.log('Response from background:', response);
-    //       } catch (error) {
-    //         console.error('Error sending message:', error);
-    //       }
-    //     })();
-    // } else {
-    //     console.log("Failed to parse the article.");
-    // }
-    // }
-       
 
     //native messaging host communication:
 

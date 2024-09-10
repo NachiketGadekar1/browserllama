@@ -1,8 +1,4 @@
-// message for connecting with natve host will be sent to background.js when connect is pressed
-
-document.getElementById('connect-button').addEventListener('click', () => {
-    chrome.runtime.sendMessage({action: "injectScript"});
-  });
+// message for connecting with native host will be sent to background.js when connect is pressed
 
 document.addEventListener('DOMContentLoaded', () => {
     const connectButton = document.getElementById('connect-button');

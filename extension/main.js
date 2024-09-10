@@ -1,5 +1,14 @@
 let message;
 
+// inject content script
+chrome.runtime.sendMessage({action: "inject"}, function(response) {
+  if (chrome.runtime.lastError) {
+      console.error("Error connecting:", chrome.runtime.lastError);
+  } else {
+      console.log("injecting:", response);
+  }
+});
+
 function showStatus(message, duration = 3000) {
   const popup = document.getElementById('status-popup');
   const statusMessage = document.getElementById('status-message');
@@ -47,7 +56,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
 
 //communicate with background script using named connection
-//fix this shit code later
+//some useless code, remove later
 function bgcon(task){
   const portbg = chrome.runtime.connect({ name: "popup<->background" });
   if(task==1){
