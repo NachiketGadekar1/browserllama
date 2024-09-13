@@ -6,11 +6,15 @@ import logging
 import os
 import json
 
+stop_event = threading.Event()
+# genration request should not be sent if this is true
+global_abort= False
+
 logging.basicConfig(filename='kcpp_api.log', level=logging.INFO, 
                     format='%(asctime)s - %(message)s', datefmt='%Y-%m-%d %H:%M:%S')
 logging.info("kcpp_api module imported")
 
-class kcpp_api:    
+class kcpp_api:        
     def __init__(self):
         self.ENDPOINT = "http://127.0.0.1:5001"
         self.username = "User"
@@ -57,7 +61,7 @@ class kcpp_api:
             "use_authors_note": False,
             "use_world_info": False,
             "max_context_length": 4096,
-            "max_length": 200,
+            "max_length": 100,
             "rep_pen": 1.1,
             "rep_pen_range": 4096,
             "rep_pen_slope": 0.7,
@@ -73,9 +77,11 @@ class kcpp_api:
             "frmtrmblln": False
         }
 
-    def handle_message(self, user_message,q):        
+    def handle_message(self, user_message,q):       
+        abort_flag = False
+        
         logging.info('output: " backend module is ACTIVE"')
-         # turn string to object
+        # turn string to object
         user_message = json.loads(user_message)
         logging.info(f"user_message bah: {user_message}")
         
@@ -83,19 +89,28 @@ class kcpp_api:
         if user_message["data"].get("status") == "new_chat":
             logging.info("New chat detected. Clearing conversation history.")
             self.clear_conversation_history()
-        
+    
         only_text = user_message["data"]["text"]
         prompt = self.get_prompt(only_text)
+            
+        if user_message["data"]["status"] == "abort":
+            logging.info("abort detected in status")
+            abort_flag = True    
+            
         stop_event = threading.Event()
-        
         previous_text = ""
         
         def get_request():
+            global global_abort
             nonlocal previous_text
             received_so_far = ""
             i=0
+            x= "empty"
+            
+            # TODO: abort_flag var is probably not required anymore, remove it
+            
             try:
-                while not stop_event.is_set():
+                while not stop_event.is_set():                        
                     response = requests.get(f"{self.ENDPOINT}/api/extra/generate/check")
                     if response.status_code == 200:
                         response_data = response.json()
@@ -105,15 +120,17 @@ class kcpp_api:
                         elif 'results' in response_data and response_data['results']:
                             current_text = response_data['results'][0]['text']                    
                             new_content = current_text[len(previous_text):]   
-                            logging.info(f"**NEW CONTENT **: {new_content}")        
+                            # logging.info(f"**NEW CONTENT **: {new_content}")        
                             received_so_far += new_content
-                            logging.info(f"***received_so_far***: {received_so_far}")  
+                            # logging.info(f"***received_so_far***: {received_so_far}")  
                             # some models keep infintitely generating it own ###instruction and ###response, this aborts generation when that happens
-                            if new_content == '###' or '###' in received_so_far:
-                                logging.info(f"'###' found in the string: {new_content}")         
+                            if new_content == '###' or '###' in received_so_far :
+                                logging.info(f"'###' found in the string : {new_content}")         
+                                stop_event.set()
                                 abort = requests.post(f"{self.ENDPOINT}/api/extra/abort") 
                                 logging.info(f"abort:{abort}") 
                                 new_content = ' '
+                                break
                             if new_content:       
                                 q.put(new_content)                                             
                                 x=1               
@@ -124,9 +141,9 @@ class kcpp_api:
                 logging.error(f"---------------Error in get_request----------: {str(e)}")        
 
         
-        get_thread = threading.Thread(target=get_request)
+        get_thread = threading.Thread(target=get_request) 
         get_thread.daemon = True
-        get_thread.start()
+        get_thread.start()        
         
         response = requests.post(f"{self.ENDPOINT}/api/v1/generate", json=prompt)
         stop_event.set()
@@ -137,7 +154,7 @@ class kcpp_api:
             text = results[0]['text']
             response_text = self.split_text(text)[0]
             response_text = response_text.replace(" ", " ")
-            # cahnge the format to match previous
+            # change the format to match previous
             new_conversation = f"### Instruction:\n{only_text}\n### Response:\n{response_text}\n"
             self.conversation_history += new_conversation
             with open(self.file_path, "a") as f:  

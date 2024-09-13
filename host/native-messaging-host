@@ -7,6 +7,7 @@ import threading
 import json
 import time
 import queue
+import requests
 from backend_api_handler import kcpp_api
 
 logging.info(f"Native-messaging-host moduule ACTIVE")
@@ -19,6 +20,7 @@ logging.basicConfig(filename='native_messaging.log', level=logging.INFO,
 ai = kcpp_api()
 global_data = None
 q = queue.Queue()
+
 
 # On Windows, the default I/O mode is O_TEXT. Set this to O_BINARY
 # to avoid unwanted modifications of the input/output streams.
@@ -34,17 +36,19 @@ def send_message(message):
   # Write the message itself.
   sys.stdout.write(message)
   sys.stdout.flush()
-  logging.info(f"Output from send_msg: {message}")
+  # logging.info(f"Output from send_msg: {message}")
   
   
 # Function that reads messages from the webapp.
 def read_messages(): 
+  global abort,global_data
+  
   # received string looks like this:
   # '{"data":{"status":"new_chat","text":"hi"}}'
-  try:
-    global global_data
+  try:    
     logging.info('Input: "read_message func active"')
     while True:
+      abort=False
       # Read the message length (first 4 bytes).
       text_length_bytes = sys.stdin.buffer.read(4)
       if len(text_length_bytes) == 0:
@@ -55,11 +59,29 @@ def read_messages():
 
       # Read the text (JSON object) of the message.
       text = sys.stdin.buffer.read(text_length).decode('utf-8')
-      logging.info(f"received data from extension: {text}")
+      logging.info(f"received data from extension: {text}")      
+          
+      try:
+          jsondata = text   
+          if jsondata != None:
+                  jsondata = json.loads(text)
+          if jsondata["data"]["status"] == "abort":              
+                    abort = True
+                    logging.info(f"jsondata value: {jsondata}")  
+                    abortrequest = requests.post("http://127.0.0.1:5001/api/extra/abort")      
+                    if abortrequest.status_code == 200:
+                        logging.info("Abort request successful.")
+                    else:
+                        logging.error(f"Abort request failed: {abortrequest.status_code}")                   
+      except Exception as e:
+        logging.error(f"Error in jsondata nmh module: {str(e)}")
 
       if text == '{"text":"exit"}':
         break
-      global_data = text
+      
+      if abort == False:
+        global_data = text
+        
       # Send an echo message back.
       send_message(json.dumps({"echo message from native host": text}))
   except Exception as e:
@@ -75,12 +97,16 @@ def call_handle_message():
         data = global_data
         if prev_data != data and data !=None:
             prev_data=data      
-            try:        
+            try:                                    
               textobj = ai.handle_message(prev_data,q)
               text = textobj[0]['text']
+              finish_reason = textobj[0]['finish_reason']
               logging.info("returned data")  
               logging.info(text)   
               send_message(json.dumps({"ai_response": text}))
+              if finish_reason == 'stop':
+                send_message(json.dumps({"ai_response":"^^^stop^^^"}))
+                
             except Exception as e:
                 logging.error(f"Error in call_handle_message: {str(e)}")
         # else:
@@ -96,7 +122,7 @@ def send_chunks():
         try:
             while not q.empty():
                 chunk = q.get()
-                logging.info(f"*****HOST received data from backend*****: {chunk}")
+                # logging.info(f"*****HOST received data from backend*****: {chunk}")
                 send_message(json.dumps({"ai_response_chunk": chunk}))
             time.sleep(0.1)  
         except Exception as e:

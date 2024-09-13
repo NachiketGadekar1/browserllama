@@ -2,6 +2,9 @@ let message;
 var chat_status = 0
 let reference = null
 
+// hide abort by default
+document.getElementById("abort-button").style.display = "none";
+
 // TODO: remove useless else conditions later
 function append(msg, isUserQuery = false) {
     console.log("append func:",msg);
@@ -39,6 +42,17 @@ function createIdGenerator() {
     };
 }
 
+function toggleButtonsState(){
+  var element = document.getElementById("abort-button");
+  var element2 = document.getElementById("send-button");
+  if (element.style.display === "none") {
+    element.style.display = "block";  
+    element2.style.display = "none";
+  } else {
+    element.style.display = "none";  
+    element2.style.display = "block";
+  }
+}
 
 document.addEventListener('DOMContentLoaded', function () {
   document.getElementById('send-button').addEventListener('click', function() {
@@ -47,8 +61,15 @@ document.addEventListener('DOMContentLoaded', function () {
           append({ text: userInput }, true);  // Append user query
           createNewAIResponseStructure();
           bgcon(1);
-          document.getElementById('question-input').value = '';  // Clear input after sending
+          toggleButtonsState();
+          document.getElementById('question-input').value = '';
       }
+  });
+
+  document.getElementById('abort-button').addEventListener('click', function() {
+    console.log("aborting");
+    toggleButtonsState()
+    bgcon(2);
   });
 
   document.getElementById('question-input').addEventListener('keydown', function(event) {
@@ -99,6 +120,11 @@ function appendAiResponse(msg) {
       textToAppend = msg.ai_response_chunk || 'No AI response found';
   } else {
       console.log('Unexpected message format:',msg);
+      // hack
+      var element = document.getElementById("abort-button");
+      var element2 = document.getElementById("send-button");
+      element.style.display = "none";  
+      element2.style.display = "block";
   }
   console.log("Text to append:", textToAppend);
   
@@ -113,23 +139,31 @@ function appendAiResponse(msg) {
 function bgcon(task){
   try{
     const portbg = chrome.runtime.connect({ name: "chat<->background" });
-    if(task==1 && chat_status == 1){
+    if(task == 1 && chat_status == 1){
         message = { status: "old_chat",task:"chat",text: document.getElementById('question-input').value };
         console.log("chat input box content", message)
         portbg.postMessage(message);
-    }else if(task==1 && chat_status == 0){
+    }else if(task == 1 && chat_status == 0){
       message = { status: "new_chat",task:"chat", text: document.getElementById('question-input').value };
       console.log("chat input box content", message)
       portbg.postMessage(message);
       chat_status = 1
+    }else if(task == 2){
+      message = { status: "abort",task:"chat", text: "None"};
+      portbg.postMessage(message);
     }else{
-      portbg.postMessage("task was not 1");
+      portbg.postMessage("invalid");
     }
 
     portbg.onMessage.addListener((smsg) => {
         console.log("chat page Received message from service worker:", smsg);
         console.log('Received message: <b>' + JSON.stringify(smsg) + '</b>');
+        if (smsg == "^^^stop^^^"){
+          var element = document.getElementById("abort-button");
+          element.style.display = "none"; 
+        }else{
         appendAiResponse(smsg)
+        }
         
       });
   }catch(error){
