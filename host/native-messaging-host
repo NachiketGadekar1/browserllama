@@ -61,6 +61,7 @@ def read_messages():
       text = sys.stdin.buffer.read(text_length).decode('utf-8')
       logging.info(f"received data from extension: {text}")      
           
+      #abort generation
       try:
           jsondata = text   
           if jsondata != None:

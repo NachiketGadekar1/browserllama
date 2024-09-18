@@ -88,6 +88,26 @@ button:hover {
   padding: 5px 10px; /* Adjust padding as needed */
 }
 
+#abort-button{
+  background-color: #d43d3d;
+  border: solid; 
+  border-color: rgb(255, 255, 255);
+  color: #ffffff;
+}
+
+#abort-popup{
+  position: fixed;
+  bottom: 100px;
+  right: 43%;
+  background-color: #d43d3d;
+  border: solid; 
+  border-color: rgb(0, 0, 0);
+  color: white;
+  padding: 1px 1em 0 1em;
+  border-radius: 5px;
+  z-index: 1000;
+  cursor: pointer;
+}
 
 .header {
   display: flex;

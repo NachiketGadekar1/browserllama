@@ -120,11 +120,11 @@ function appendAiResponse(msg) {
       textToAppend = msg.ai_response_chunk || 'No AI response found';
   } else {
       console.log('Unexpected message format:',msg);
-      // hack
-      var element = document.getElementById("abort-button");
-      var element2 = document.getElementById("send-button");
-      element.style.display = "none";  
-      element2.style.display = "block";
+      // temporary hack
+      // var element = document.getElementById("abort-button");
+      // var element2 = document.getElementById("send-button");
+      // element.style.display = "none";  
+      // element2.style.display = "block";
   }
   console.log("Text to append:", textToAppend);
   
@@ -158,11 +158,13 @@ function bgcon(task){
     portbg.onMessage.addListener((smsg) => {
         console.log("chat page Received message from service worker:", smsg);
         console.log('Received message: <b>' + JSON.stringify(smsg) + '</b>');
-        if (smsg == "^^^stop^^^"){
-          var element = document.getElementById("abort-button");
-          element.style.display = "none"; 
+        // TODO: this is not working right
+        let object;
+        object = smsg
+        if (object.ai_response === "^^^stop^^^"){
+          toggleButtonsState()
         }else{
-        appendAiResponse(smsg)
+          appendAiResponse(smsg)
         }
         
       });

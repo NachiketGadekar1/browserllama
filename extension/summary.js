@@ -1,8 +1,10 @@
 let message;
+let summaryOver = false
+
 // establishing connection so we can listen to background.js without the user sending anything in the text box, just a lazy hack
 summarybgcon()
 
-console.log("*******summary page is active*****");
+console.log("***********summary page is active*****");
 
 function append(msg) {
   console.log("This is from the append func:", msg);
@@ -14,7 +16,7 @@ function append(msg) {
     console.log("full msg:", msg.ai_response);
   }else if (msg.ai_response_chunk) {
     textToAppend = msg.ai_response_chunk || 'No AI response found';
-  } else {
+  }else {
     textToAppend = 'Unexpected message format';
   }
 
@@ -24,7 +26,12 @@ function append(msg) {
   const spinner = document.querySelector('.spinner');
   if (summaryDiv) {
     spinner.style.display = 'none';
-    summaryDiv.textContent += textToAppend;
+    if (textToAppend === "\n") {
+      summaryDiv.innerHTML += '<br>'; 
+      summaryDiv.innerHTML += '<br>'; 
+    } else {
+      summaryDiv.appendChild(document.createTextNode(textToAppend));
+    }
     summaryDiv.scrollTop = summaryDiv.scrollHeight;
   } else {
     console.error("Couldn't find the .summary-content div");
@@ -61,6 +68,12 @@ document.addEventListener('DOMContentLoaded', function () {
     }
   });
 
+  document.getElementById('abort-button').addEventListener('click', function() {
+  console.log("aborting");
+  // toggleButtonsState()
+  bgcon(2);
+  });
+
   // Event listener for the back button
   document.querySelector('.back-button').addEventListener('click', function() {
     window.location.href = './main.html';
@@ -76,6 +89,9 @@ function bgcon(task){
         message = { status: "old_chat",task:"summary",text: document.getElementById('question-input').value };
         console.log("summarypage input box content", message)
         portbg.postMessage(message);
+    }else if(task == 2){
+      message = { status: "abort",task:"chat", text: "None"};
+      portbg.postMessage(message);
     }else{
       portbg.postMessage("summarypage error");
     }
@@ -91,13 +107,26 @@ function bgcon(task){
 }
 
 function summarybgcon(){
-  const portbg = chrome.runtime.connect({ name: "summary<->background" });
-  portbg.postMessage("initialize");
+  try{    
+    const portbg = chrome.runtime.connect({ name: "summary<->background" });
+    portbg.postMessage("initialize");
 
-  document.querySelector('.spinner').style.display = 'block';
-  portbg.onMessage.addListener((smsg) => {
-    console.log("summary page Received message from service worker:", smsg);
-    console.log('Received message: <b>' + JSON.stringify(smsg) + '</b>');
-    append(smsg)
- })
+    document.querySelector('.spinner').style.display = 'block';
+    portbg.onMessage.addListener((smsg) => {
+      console.log("summary page Received message from service worker:", smsg);
+      console.log('Received message: <b>' + JSON.stringify(smsg) + '</b>');
+      let message;
+      message = smsg
+      if (message.ai_response === "^^^stop^^^"){
+        summaryOver = true
+        let newline={
+          "ai_response_chunk": "\n"
+        }
+        append(newline)
+      }
+      append(smsg)
+  })
+  }catch(error){
+    console.log("summarybgcon error:",error)
+  }  
 }
