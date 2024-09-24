@@ -5,10 +5,12 @@ from numpy.ma import MaskedArray
 
 __all__: list[str]
 
-_ShapeType_co = TypeVar("_ShapeType_co", covariant=True, bound=tuple[int, ...])
+# TODO: Set the `bound` to something more suitable once we
+# have proper shape support
+_ShapeType = TypeVar("_ShapeType", bound=Any)
 _DType_co = TypeVar("_DType_co", bound=dtype[Any], covariant=True)
 
-class MaskedRecords(MaskedArray[_ShapeType_co, _DType_co]):
+class MaskedRecords(MaskedArray[_ShapeType, _DType_co]):
     def __new__(
         cls,
         shape,

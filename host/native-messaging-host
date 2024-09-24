@@ -14,12 +14,16 @@ logging.info(f"Native-messaging-host moduule ACTIVE")
 
 #logging
 #remove from prod??
-logging.basicConfig(filename='native_messaging.log', level=logging.INFO, 
+logging.basicConfig(filename='native_messaging.log',  encoding='utf-8',level=logging.INFO, 
                     format='%(asctime)s - %(message)s', datefmt='%Y-%m-%d %H:%M:%S')
 
 ai = kcpp_api()
 global_data = None
+webpage_content = ""
 q = queue.Queue()
+abort_flag_q = queue.Queue()
+abort = False
+abort_flag_q.put(abort)
 
 
 # On Windows, the default I/O mode is O_TEXT. Set this to O_BINARY
@@ -41,7 +45,7 @@ def send_message(message):
   
 # Function that reads messages from the webapp.
 def read_messages(): 
-  global abort,global_data
+  global abort,global_data,webpage_content
   
   # received string looks like this:
   # '{"data":{"status":"new_chat","text":"hi"}}'
@@ -66,8 +70,12 @@ def read_messages():
           jsondata = text   
           if jsondata != None:
                   jsondata = json.loads(text)
+                  if jsondata["data"]["task"] == "summary":
+                    webpage_content = jsondata["data"]["text"]
+                    logging.info(f'webpage content : {jsondata["data"]["text"]}')
           if jsondata["data"]["status"] == "abort":              
                     abort = True
+                    abort_flag_q.put(abort)
                     logging.info(f"jsondata value: {jsondata}")  
                     abortrequest = requests.post("http://127.0.0.1:5001/api/extra/abort")      
                     if abortrequest.status_code == 200:
@@ -75,7 +83,7 @@ def read_messages():
                     else:
                         logging.error(f"Abort request failed: {abortrequest.status_code}")                   
       except Exception as e:
-        logging.error(f"Error in jsondata nmh module: {str(e)}")
+        logging.error(f"Error during abort: {str(e)}")
 
       if text == '{"text":"exit"}':
         break
@@ -92,14 +100,14 @@ def read_messages():
 #run the model with user prompt/webpage
 def call_handle_message():
    logging.info("***********call_handle_message func IS ACTIVE*********")
-   global global_data
+   global global_data, webpage_content
    prev_data = ""
    while True:
         data = global_data
         if prev_data != data and data !=None:
             prev_data=data      
             try:                                    
-              textobj = ai.handle_message(prev_data,q)
+              textobj = ai.handle_message(prev_data,q,abort_flag_q,webpage_content)
               text = textobj[0]['text']
               finish_reason = textobj[0]['finish_reason']
               logging.info("returned data")  
@@ -125,7 +133,7 @@ def send_chunks():
                 chunk = q.get()
                 # logging.info(f"*****HOST received data from backend*****: {chunk}")
                 send_message(json.dumps({"ai_response_chunk": chunk}))
-            time.sleep(0.1)  
+            time.sleep(0.2)  
         except Exception as e:
             logging.error(f"Error in send_chunks: {str(e)}")
      

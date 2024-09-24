@@ -1,7 +1,7 @@
 from collections.abc import Sequence
-from typing import SupportsIndex, TypeAlias
+from typing import Union, SupportsIndex
 
-_Shape: TypeAlias = tuple[int, ...]
+_Shape = tuple[int, ...]
 
 # Anything that can be coerced to a shape tuple
-_ShapeLike: TypeAlias = SupportsIndex | Sequence[SupportsIndex]
+_ShapeLike = Union[SupportsIndex, Sequence[SupportsIndex]]

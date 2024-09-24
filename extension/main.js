@@ -76,6 +76,9 @@ function bgcon(task){
 
   portbg.onMessage.addListener((smsg) => {
     console.log("Received message from service worker:", smsg);
+    if(smsg == "error"){
+      window.location.href = 'error.html';
+    }
   });
 }
 

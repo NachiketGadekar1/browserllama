@@ -1,7 +1,8 @@
 let message;
 let summaryOver = false
+let summaryStatus = "Partial"
 
-// establishing connection so we can listen to background.js without the user sending anything in the text box, just a lazy hack
+// establishing connection so we can listen to background.js without the user sending anything in the text box
 summarybgcon()
 
 console.log("***********summary page is active*****");
@@ -74,6 +75,13 @@ document.addEventListener('DOMContentLoaded', function () {
   bgcon(2);
   });
 
+  document.getElementById('summariseFurther').addEventListener('click', function() {
+    console.log("Summarising further");
+    const element = document.getElementById('summariseFurther');
+    element.style.display = "none";
+    bgcon(3);
+    });
+
   // Event listener for the back button
   document.querySelector('.back-button').addEventListener('click', function() {
     window.location.href = './main.html';
@@ -91,6 +99,9 @@ function bgcon(task){
         portbg.postMessage(message);
     }else if(task == 2){
       message = { status: "abort",task:"chat", text: "None"};
+      portbg.postMessage(message);
+    }else if(task == 3){
+      message = { status: "old_chat",task:"summarise-further", text: "None"};
       portbg.postMessage(message);
     }else{
       portbg.postMessage("summarypage error");
@@ -119,6 +130,14 @@ function summarybgcon(){
       message = smsg
       if (message.ai_response === "^^^stop^^^"){
         summaryOver = true
+
+        // making summarise further button visible once partial summary is over
+        const element = document.getElementById('summariseFurther');
+        if (summaryStatus == "Partial"){
+          element.classList.remove('hidden');
+          summaryStatus = "Full"
+        }        
+
         let newline={
           "ai_response_chunk": "\n"
         }

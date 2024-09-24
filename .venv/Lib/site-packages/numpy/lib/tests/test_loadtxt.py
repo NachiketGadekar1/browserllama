@@ -18,12 +18,12 @@ from numpy.testing import assert_array_equal, HAS_REFCOUNT, IS_PYPY
 def test_scientific_notation():
     """Test that both 'e' and 'E' are parsed correctly."""
     data = StringIO(
-        
+        (
             "1.0e-1,2.0E1,3.0\n"
             "4.0e-2,5.0E-1,6.0\n"
             "7.0e-3,8.0E1,9.0\n"
             "0.0e-4,1.0E-1,2.0"
-        
+        )
     )
     expected = np.array(
         [[0.1, 20., 3.0], [0.04, 0.5, 6], [0.007, 80., 9], [0, 0.1, 2]]
@@ -46,14 +46,14 @@ def mixed_types_structured():
     with the associated structured array.
     """
     data = StringIO(
-        
+        (
             "1000;2.4;alpha;-34\n"
             "2000;3.1;beta;29\n"
             "3500;9.9;gamma;120\n"
             "4090;8.1;delta;0\n"
             "5001;4.4;epsilon;-99\n"
             "6543;7.8;omega;-1\n"
-        
+        )
     )
     dtype = np.dtype(
         [('f0', np.uint16), ('f1', np.float64), ('f2', 'S7'), ('f3', np.int8)]
@@ -219,7 +219,9 @@ def test_converters_negative_indices():
     txt = StringIO('1.5,2.5\n3.0,XXX\n5.5,6.0')
     conv = {-1: lambda s: np.nan if s == 'XXX' else float(s)}
     expected = np.array([[1.5, 2.5], [3.0, np.nan], [5.5, 6.0]])
-    res = np.loadtxt(txt, dtype=np.float64, delimiter=",", converters=conv)
+    res = np.loadtxt(
+        txt, dtype=np.float64, delimiter=",", converters=conv, encoding=None
+    )
     assert_equal(res, expected)
 
 
@@ -233,6 +235,7 @@ def test_converters_negative_indices_with_usecols():
         delimiter=",",
         converters=conv,
         usecols=[0, -1],
+        encoding=None,
     )
     assert_equal(res, expected)
 
@@ -310,7 +313,7 @@ def test_converter_with_structured_dtype():
 
 def test_converter_with_unicode_dtype():
     """
-    With the 'bytes' encoding, tokens are encoded prior to being
+    With the default 'bytes' encoding, tokens are encoded prior to being
     passed to the converter. This means that the output of the converter may
     be bytes instead of unicode as expected by `read_rows`.
 
@@ -320,8 +323,7 @@ def test_converter_with_unicode_dtype():
     txt = StringIO('abc,def\nrst,xyz')
     conv = bytes.upper
     res = np.loadtxt(
-            txt, dtype=np.dtype("U3"), converters=conv, delimiter=",",
-            encoding="bytes")
+            txt, dtype=np.dtype("U3"), converters=conv, delimiter=",")
     expected = np.array([['ABC', 'DEF'], ['RST', 'XYZ']])
     assert_equal(res, expected)
 
@@ -457,7 +459,8 @@ def test_read_from_generator_multitype():
 
 def test_read_from_bad_generator():
     def gen():
-        yield from ["1,2", b"3, 5", 12738]
+        for entry in ["1,2", b"3, 5", 12738]:
+            yield entry
 
     with pytest.raises(
             TypeError, match=r"non-string returned while reading data"):
@@ -597,14 +600,14 @@ def test_comment_multichar_error_with_quote():
 
 def test_structured_dtype_with_quotes():
     data = StringIO(
-        
+        (
             "1000;2.4;'alpha';-34\n"
             "2000;3.1;'beta';29\n"
             "3500;9.9;'gamma';120\n"
             "4090;8.1;'delta';0\n"
             "5001;4.4;'epsilon';-99\n"
             "6543;7.8;'omega';-1\n"
-        
+        )
     )
     dtype = np.dtype(
         [('f0', np.uint16), ('f1', np.float64), ('f2', 'S7'), ('f3', np.int8)]
@@ -704,7 +707,7 @@ def test_byteswapping_and_unaligned(dtype, value, swap):
     full_dt = np.dtype([("a", "S1"), ("b", dtype)], align=False)
     # The above ensures that the interesting "b" field is unaligned:
     assert full_dt.fields["b"][1] == 1
-    res = np.loadtxt(data, dtype=full_dt, delimiter=",",
+    res = np.loadtxt(data, dtype=full_dt, delimiter=",", encoding=None,
                      max_rows=1)  # max-rows prevents over-allocation
     assert res["b"] == dtype.type(value)
 
@@ -837,7 +840,7 @@ class TestCReaderUnitTests:
     # unless things go very very wrong somewhere.
     def test_not_an_filelike(self):
         with pytest.raises(AttributeError, match=".*read"):
-            np._core._multiarray_umath._load_from_filelike(
+            np.core._multiarray_umath._load_from_filelike(
                 object(), dtype=np.dtype("i"), filelike=True)
 
     def test_filelike_read_fails(self):
@@ -854,7 +857,7 @@ class TestCReaderUnitTests:
                 return "1,2,3\n"
 
         with pytest.raises(RuntimeError, match="Bad bad bad!"):
-            np._core._multiarray_umath._load_from_filelike(
+            np.core._multiarray_umath._load_from_filelike(
                 BadFileLike(), dtype=np.dtype("i"), filelike=True)
 
     def test_filelike_bad_read(self):
@@ -870,23 +873,23 @@ class TestCReaderUnitTests:
 
         with pytest.raises(TypeError,
                     match="non-string returned while reading data"):
-            np._core._multiarray_umath._load_from_filelike(
+            np.core._multiarray_umath._load_from_filelike(
                 BadFileLike(), dtype=np.dtype("i"), filelike=True)
 
     def test_not_an_iter(self):
         with pytest.raises(TypeError,
                     match="error reading from object, expected an iterable"):
-            np._core._multiarray_umath._load_from_filelike(
+            np.core._multiarray_umath._load_from_filelike(
                 object(), dtype=np.dtype("i"), filelike=False)
 
     def test_bad_type(self):
         with pytest.raises(TypeError, match="internal error: dtype must"):
-            np._core._multiarray_umath._load_from_filelike(
+            np.core._multiarray_umath._load_from_filelike(
                 object(), dtype="i", filelike=False)
 
     def test_bad_encoding(self):
         with pytest.raises(TypeError, match="encoding must be a unicode"):
-            np._core._multiarray_umath._load_from_filelike(
+            np.core._multiarray_umath._load_from_filelike(
                 object(), dtype=np.dtype("i"), filelike=False, encoding=123)
 
     @pytest.mark.parametrize("newline", ["\r", "\n", "\r\n"])
@@ -899,7 +902,7 @@ class TestCReaderUnitTests:
         data = StringIO('0\n1\n"2\n"\n3\n4 #\n'.replace("\n", newline),
                         newline="")
 
-        res = np._core._multiarray_umath._load_from_filelike(
+        res = np.core._multiarray_umath._load_from_filelike(
             data, dtype=np.dtype("U10"), filelike=True,
             quote='"', comment="#", skiplines=1)
         assert_array_equal(res[:, 0], ["1", f"2{newline}", "3", "4 "])
@@ -970,45 +973,12 @@ def test_parametric_unit_discovery(
     """Check that the correct unit (e.g. month, day, second) is discovered from
     the data when a user specifies a unitless datetime."""
     # Unit should be "D" (days) due to last entry
-    data = [generic_data] * nrows + [long_datum]
+    data = [generic_data] * 50000 + [long_datum]
     expected = np.array(data, dtype=expected_dtype)
-    assert len(data) == nrows+1
-    assert len(data) == len(expected)
 
     # file-like path
     txt = StringIO("\n".join(data))
     a = np.loadtxt(txt, dtype=unitless_dtype)
-    assert len(a) == len(expected)
-    assert a.dtype == expected.dtype
-    assert_equal(a, expected)
-
-    # file-obj path
-    fd, fname = mkstemp()
-    os.close(fd)
-    with open(fname, "w") as fh:
-        fh.write("\n".join(data)+"\n")
-    # loading the full file...
-    a = np.loadtxt(fname, dtype=unitless_dtype)
-    assert len(a) == len(expected)
-    assert a.dtype == expected.dtype
-    assert_equal(a, expected)
-    # loading half of the file...
-    a = np.loadtxt(fname, dtype=unitless_dtype, max_rows=int(nrows/2))
-    os.remove(fname)
-    assert len(a) == int(nrows/2)
-    assert_equal(a, expected[:int(nrows/2)])
-
-
-def test_str_dtype_unit_discovery_with_converter():
-    data = ["spam-a-lot"] * 60000 + ["XXXtis_but_a_scratch"]
-    expected = np.array(
-        ["spam-a-lot"] * 60000 + ["tis_but_a_scratch"], dtype="U17"
-    )
-    conv = lambda s: s.removeprefix("XXX")
-
-    # file-like path
-    txt = StringIO("\n".join(data))
-    a = np.loadtxt(txt, dtype="U", converters=conv)
     assert a.dtype == expected.dtype
     assert_equal(a, expected)
 
@@ -1017,7 +987,31 @@ def test_str_dtype_unit_discovery_with_converter():
     os.close(fd)
     with open(fname, "w") as fh:
         fh.write("\n".join(data))
-    a = np.loadtxt(fname, dtype="U", converters=conv)
+    a = np.loadtxt(fname, dtype=unitless_dtype)
+    os.remove(fname)
+    assert a.dtype == expected.dtype
+    assert_equal(a, expected)
+
+
+def test_str_dtype_unit_discovery_with_converter():
+    data = ["spam-a-lot"] * 60000 + ["XXXtis_but_a_scratch"]
+    expected = np.array(
+        ["spam-a-lot"] * 60000 + ["tis_but_a_scratch"], dtype="U17"
+    )
+    conv = lambda s: s.strip("XXX")
+
+    # file-like path
+    txt = StringIO("\n".join(data))
+    a = np.loadtxt(txt, dtype="U", converters=conv, encoding=None)
+    assert a.dtype == expected.dtype
+    assert_equal(a, expected)
+
+    # file-obj path
+    fd, fname = mkstemp()
+    os.close(fd)
+    with open(fname, "w") as fh:
+        fh.write("\n".join(data))
+    a = np.loadtxt(fname, dtype="U", converters=conv, encoding=None)
     os.remove(fname)
     assert a.dtype == expected.dtype
     assert_equal(a, expected)
@@ -1050,26 +1044,5 @@ def test_field_growing_cases():
     assert len(res) == 0
 
     for i in range(1, 1024):
-        res = np.loadtxt(["," * i], delimiter=",", dtype=bytes, max_rows=10)
+        res = np.loadtxt(["," * i], delimiter=",", dtype=bytes)
         assert len(res) == i+1
-
-@pytest.mark.parametrize("nmax", (10000, 50000, 55000, 60000))
-def test_maxrows_exceeding_chunksize(nmax):
-    # tries to read all of the file,
-    # or less, equal, greater than _loadtxt_chunksize
-    file_length = 60000
-
-    # file-like path
-    data = ["a 0.5 1"]*file_length
-    txt = StringIO("\n".join(data))
-    res = np.loadtxt(txt, dtype=str, delimiter=" ", max_rows=nmax)
-    assert len(res) == nmax
-
-    # file-obj path
-    fd, fname = mkstemp()
-    os.close(fd)
-    with open(fname, "w") as fh:
-        fh.write("\n".join(data))
-    res = np.loadtxt(fname, dtype=str, delimiter=" ", max_rows=nmax)
-    os.remove(fname)
-    assert len(res) == nmax

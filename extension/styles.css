@@ -155,6 +155,20 @@ input[type="text"], #response {
   transition: opacity 0.3s ease-in-out;
 }
 
+#summariseFurther {
+  font-size: small;
+  position: fixed;
+  bottom: 100px;
+  right: 35%;
+  background-color: #62cf34;
+  color: rgb(0, 0, 0);
+  padding: 1px 3px 1px 3px;
+  border: dotted;
+  border-radius: 5px;
+  border-color: #110303;
+  z-index: 1000;
+}
+
 .hidden {
 opacity: 0;
 pointer-events: none;
