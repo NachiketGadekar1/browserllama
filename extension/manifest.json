@@ -12,6 +12,7 @@
     "default_popup": "home.html"
   },
   "icons": {
-    "128": "icon-128.png"
+    "128": "./assets/browserllama logo 128.png",
+    "48": "./assets/browserllama logo 48.png"
   }
 }
