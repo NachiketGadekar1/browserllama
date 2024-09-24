@@ -1,4 +1,0 @@
-### Instruction:
-hi
-### Response:
-Hello! How can I assist you today?
