@@ -69,7 +69,9 @@ document.addEventListener('DOMContentLoaded', function () {
     }
   });
 
-  document.getElementById('abort-button').addEventListener('click', function() {
+  document.getElementById('abort-button').addEventListener('click', function() {  
+  const spinner = document.querySelector('.spinner');
+  spinner.style.display = 'none';
   console.log("aborting");
   // toggleButtonsState()
   bgcon(2);

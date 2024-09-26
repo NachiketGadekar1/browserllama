@@ -6,8 +6,8 @@ let portsumpg;
 let portchpg;
 let receivedMsgFromComponent
 let injectionFLag = false
+// let connect_status = false
 
-// TODO: add condition check for forward_to_summarise_page(msg) in handleairesponse()
 try{
     //listen for content-script message
     console.log("service worker active");
@@ -94,10 +94,16 @@ try{
 
     function connect() {
       try{
-        const hostName = 'com.google.chrome.example.echo';
-        port = chrome.runtime.connectNative(hostName);
-        port.onMessage.addListener(onNativeMessage);
-        port.onDisconnect.addListener(onDisconnected);
+        // if (connect_status == false){
+          // console.log("connect status was:",connect_status)
+          // connect_status = true          
+          const hostName = 'com.google.chrome.example.echo';
+          port = chrome.runtime.connectNative(hostName);
+          port.onMessage.addListener(onNativeMessage);
+          port.onDisconnect.addListener(onDisconnected);
+        // }else{
+        //   console.log("connect status was:",connect_status)
+        // }
       }catch(error) {
         console.log("Error connecting to native host:", error);
         forwardtopopup("error")
@@ -147,11 +153,13 @@ try{
       port.onMessage.addListener((portmsg) => {
         console.log("Received message from popup:", portmsg);
         if(portmsg == 1) {
+          console.log("background.js received text from popup: ",portmsg);
           connect();
         }else if(portmsg == 2){
+          console.log("background.js received text from popup: ",portmsg);
           sendExtractedNativeMessage();
         } else {
-          console.log("serviceworker background.js received text from popup: ",portmsg);
+          console.log("background.js received invalid text from popup: ",portmsg);
           sendNativeMessage(portmsg);
         }
       });
