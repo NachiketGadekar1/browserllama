@@ -37,43 +37,55 @@ if sys.platform == "win32":
   msvcrt.setmode(sys.stdout.fileno(), os.O_BINARY)
 
 
-# def is_process_running(process_name):
-#     """Check if a process is already running."""
-#     for proc in psutil.process_iter(['pid', 'name']):
-#         try:
-#             # Check the process name
-#             if proc.info['name'] == process_name:
-#                 return True
-#         except (psutil.NoSuchProcess, psutil.AccessDenied, psutil.ZombieProcess):
-#             pass
-#     return False
+def is_process_running(process_names):
+    for proc in psutil.process_iter(['pid', 'name']):
+        try:
+            if proc.info['name'] in process_names:
+                return True
+        except (psutil.NoSuchProcess, psutil.AccessDenied, psutil.ZombieProcess):
+            pass
+    return False
 
-# def run_koboldcpp(file_name):
-#     try:
-#         logging.info("Running koboldcpp...")
-
-#         # Get the current directory (where the script is located)
-#         current_dir = os.path.dirname(os.path.abspath(__file__))
-        
-#         # Construct the full path of the exe file
-#         exe_path = os.path.join(current_dir, file_name)
-
-#         if os.path.isfile(exe_path):
-#             # Check if the process is already running
-#             if is_process_running(file_name):
-#                 logging.info(f"{file_name} is already running. Skipping execution.")
-#             else:
-#                 # Run the executable as if double-clicked (non-blocking)
-#                 # Set the cwd to the current directory for proper context
-#                 subprocess.Popen(exe_path, shell=True, cwd=current_dir)
-#                 logging.info(f"Started {file_name}.")
-#         else:
-#             logging.info(f"Error: {file_name} does not exist in the current directory.")
+def find_kcpp_executable():
+    # Get the directory of the current script
+    script_dir = os.path.dirname(os.path.abspath(__file__))
     
-#     except Exception as e:
-#         logging.error(f"An error occurred: {e}")
+    # Define possible executable names
+    executables = ["koboldcpp_nocuda.exe", "koboldcpp.exe"]
+    
+    for exe in executables:
+        path = os.path.join(script_dir, exe)
+        if os.path.isfile(path):
+            return path
+    
+    return None
 
-# run_koboldcpp("koboldcpp_nocuda.exe") 
+def run_kcpp():
+    try:
+        # Check if either version is already running
+        process_names = ["koboldcpp_nocuda.exe", "koboldcpp.exe"]
+        process_status = is_process_running(process_names)
+        logging.info(f"Is kcpp running? {process_status}")
+       
+        if not process_status:
+            # Find the KCPP executable
+            kcpp_path = find_kcpp_executable()
+            
+            if kcpp_path:
+                # args
+                command = [kcpp_path, "no-webui.kcpps", "--showgui"]
+                
+                subprocess.Popen(command,
+                                 creationflags=subprocess.CREATE_NEW_CONSOLE if sys.platform == "win32" else 0)
+                logging.info(f"Launched KCPP with command: {' '.join(command)}")
+            else:
+                logging.error("KCPP executable not found in the script directory.")
+        else:
+            logging.info("KCPP executable is already running!")
+    except Exception as e:
+        logging.error(f"Error in kcpp: {str(e)}")
+
+run_kcpp()
 
 
 # Helper function that sends a message to the webapp.
