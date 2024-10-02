@@ -60,7 +60,7 @@ document.addEventListener('DOMContentLoaded', () => {
 function bgcon(task){
   const portbg = chrome.runtime.connect({ name: "popup<->background" });
   if(task==1){
-    showStatus("Connecting...", 3000);
+    showStatus("Connecting...", 5000);
     portbg.postMessage(1);
   }else if(task==2){
     //send value of input box to background.js

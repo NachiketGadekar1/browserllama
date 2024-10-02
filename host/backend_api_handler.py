@@ -22,6 +22,7 @@ class kcpp_api:
         self.delete_history_file()
         self.conversation_history = ""
         self.load_conversation_history()
+        self.conversation_history = self.read_conversation_history()
                 
     def delete_history_file(self):
         if os.path.exists(self.file_path):
@@ -39,22 +40,33 @@ class kcpp_api:
         if os.path.exists(self.file_path):
             with open(self.file_path, 'r') as file:
                 self.conversation_history = file.read()
+
+    def read_conversation_history(self, file_path=None):
+        if file_path is None:
+            file_path = self.file_path
+
+        try:
+            if os.path.exists(file_path):
+                with open(file_path, 'r', encoding='utf-8') as file:
+                    content = file.read()
+                logging.info(f"Successfully read conversation history from {file_path}")
+                logging.info(f"history is {content}")
+                return content
+            else:
+                logging.info(f"No conversation history file found at {file_path}")
+                return ""
+        except IOError as e:
+            logging.error(f"Error reading file {file_path}: {str(e)}")
+            return ""
             
-    # def sayhi(self,message):
-    #     # this will output in log file of the module that called it
-    #     logging.info(f"Out: backend module active")
-    #     logging.info(f"Out: {message}")
-    
     def text_chunker(self,text):
         text_splitter = RecursiveCharacterTextSplitter(
-            chunk_size = 1500,
+            chunk_size = 3000,
             chunk_overlap  = 20,
             length_function = len,
         )
         texts = text_splitter.split_text(text)
-        logging.info(f"--------text chunks -----: {texts}") 
-        # print(len(texts))
-        # print(texts[1]) 
+        # logging.info(f"--------text chunks -----: {texts}") 
         return texts
     
     @staticmethod
@@ -68,7 +80,7 @@ class kcpp_api:
             value = mcl.json()['value']          
         except (requests.RequestException, ValueError):
             mcl = 4096
-            logging.info('requests.get(f"{self.ENDPOINT}/api/extra/true_max_context_length") failed')
+            logging.info('requests.get(f"{self.ENDPOINT}/api/extra/true_max_context_length") failed') 
              
         return {
             # "prompt": self.conversation_history +f"{self.username}: {text}\n{self.botname}:",
@@ -99,7 +111,7 @@ class kcpp_api:
             logging.info('output: " backend module is ACTIVE"')
             # turn string to object
             user_message = json.loads(user_message)
-            logging.info(f"user_message bah: {user_message}")
+            # logging.info(f"user_message bah: {user_message}")
             
             # Check if it's a new chat
             if user_message["data"].get("status") == "new_chat":
@@ -112,23 +124,23 @@ class kcpp_api:
             if user_message["data"]["status"] == "abort":
                 logging.info("abort detected in status")  
                 
+            if user_message["data"]["task"] == "summary-chat":
+                logging.info("summary_chat_prompt detected") 
+                summary_chat_prompt = user_message["data"]["text"] 
+                summary_chat_prompt = self.get_prompt(summary_chat_prompt)
+
             stop_event = threading.Event()
             previous_text = ""
             
             def get_request():
                 nonlocal previous_text
-                received_so_far = ""
-                i=0
-                x= "empty"            
+                received_so_far = ""     
                 try:
                     while not stop_event.is_set():                        
                         response = requests.get(f"{self.ENDPOINT}/api/extra/generate/check")
                         if response.status_code == 200:
                             response_data = response.json()
-                            if i==0:
-                                text = response_data['results'][0]['text']                
-                                i=i+1
-                            elif 'results' in response_data and response_data['results']:
+                            if 'results' in response_data and response_data['results']:
                                 current_text = response_data['results'][0]['text']                    
                                 new_content = current_text[len(previous_text):]   
                                 # logging.info(f"**NEW CONTENT **: {new_content}")        
@@ -143,8 +155,7 @@ class kcpp_api:
                                     new_content = ' '
                                     break
                                 if new_content:       
-                                    q.put(new_content)                                             
-                                    x=1               
+                                    q.put(new_content)                                                    
                                 previous_text = current_text
                         
                         time.sleep(0.2)
@@ -157,10 +168,15 @@ class kcpp_api:
             get_thread.daemon = True
             get_thread.start()        
             
-            #TODO:clean this block, too much repetition 
+            #TODO:clean this block
             if user_message["data"].get("task") == "chat" and user_message["data"].get("text") != "None":
                 logging.info(f"****task is chat*** ") 
                 response = requests.post(f"{self.ENDPOINT}/api/v1/generate", json=prompt)
+            elif user_message["data"].get("task") == "summary-chat": 
+                logging.info(f"****task is summary-chat*** ")  
+                # summary_chat_prompt = self.read_conversation_history() + summary_chat_prompt
+                # logging.info(f"%%%%%%%%%%%prompt is:::::::::: {summary_chat_prompt}") 
+                response = requests.post(f"{self.ENDPOINT}/api/v1/generate", json= summary_chat_prompt)  
             elif user_message["data"].get("task") == "summary": 
                 logging.info(f"****task is summary*** ") 
                 # summarsing only the first chunk
@@ -168,18 +184,19 @@ class kcpp_api:
                 abort_value = abort_flag_q.get
                 logging.info(f"****sending text chunk*** ") 
                 prompt = self.get_prompt(chunks[0])
+                logging.info(f"prompt is:::::::::: {prompt}") 
                 response = requests.post(f"{self.ENDPOINT}/api/v1/generate", json=prompt)
                 if response.status_code == 200:
                     results = response.json()['results']
                     text = results[0]['text']
-                    response_text = self.split_text(text)[0]
-                    response_text = response_text.replace(" ", " ")
+                    logging.info(f"text is: {text}") 
                     # change the format to match previous
-                    new_conversation = f"### Instruction:\n{only_text}\n### Response:\n{response_text}\n"
+                    new_conversation = f"### Instruction:\n{chunks[0]}\n### Response:\n{text}\n"
                     self.conversation_history += new_conversation
+                    logging.info(f"self.conversation history after one chunk summary is:{self.conversation_history}")    
                     with open(self.file_path, "a", encoding="utf-8") as f:  
                         f.write(new_conversation) 
-                    response_text = response_text.replace("\n", "")
+                    # response_text = response_text.replace("\n", "")
                     logging.info(f"Out: {results}")  
                 else:
                     logging.info(f"bad response status code: {response.status_code}")
@@ -187,7 +204,7 @@ class kcpp_api:
                 stop_event.set()
                 get_thread.join()
                 return results
-            
+            # bugged
             elif user_message["data"].get("task") == "summarise-further": 
                 try:
                     logging.info("task is summarsing further")
@@ -208,14 +225,13 @@ class kcpp_api:
                             if response.status_code == 200:
                                 results = response.json()['results']
                                 text = results[0]['text']
-                                response_text = self.split_text(text)[0]
-                                response_text = response_text.replace(" ", " ")
+                                logging.info(f"text is: {text}")  
                                 # change the format to match previous
-                                new_conversation = f"### Instruction:\n{only_text}\n### Response:\n{response_text}\n"
+                                new_conversation = f"### Instruction:\n{only_text}\n### Response:\n{text}\n"
                                 self.conversation_history += new_conversation
                                 with open(self.file_path, "a" ,encoding="utf-8") as f:  
                                     f.write(new_conversation)
-                                response_text = response_text.replace("\n", "")
+                                # response_text = response_text.replace("\n", "")
                                 logging.info(f"Out: {results}")    
                             else:
                                 logging.info(f"bad response status code: {response.status_code}")

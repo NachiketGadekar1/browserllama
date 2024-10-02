@@ -37,6 +37,14 @@ if sys.platform == "win32":
   msvcrt.setmode(sys.stdout.fileno(), os.O_BINARY)
 
 
+def get_script_dir():
+    if getattr(sys, 'frozen', False):
+        # Running as compiled exe
+        return os.path.dirname(sys.executable)
+    else:
+        # Running as script
+        return os.path.dirname(os.path.abspath(__file__))
+
 def is_process_running(process_names):
     for proc in psutil.process_iter(['pid', 'name']):
         try:
@@ -47,10 +55,7 @@ def is_process_running(process_names):
     return False
 
 def find_kcpp_executable():
-    # Get the directory of the current script
-    script_dir = os.path.dirname(os.path.abspath(__file__))
-    
-    # Define possible executable names
+    script_dir = get_script_dir()
     executables = ["koboldcpp_nocuda.exe", "koboldcpp.exe"]
     
     for exe in executables:
@@ -58,33 +63,34 @@ def find_kcpp_executable():
         if os.path.isfile(path):
             return path
     
+    # If not found in script directory, check parent directory
+    parent_dir = os.path.dirname(script_dir)
+    for exe in executables:
+        path = os.path.join(parent_dir, exe)
+        if os.path.isfile(path):
+            return path
+    
     return None
 
 def run_kcpp():
     try:
-        # Check if either version is already running
         process_names = ["koboldcpp_nocuda.exe", "koboldcpp.exe"]
         process_status = is_process_running(process_names)
         logging.info(f"Is kcpp running? {process_status}")
        
         if not process_status:
-            # Find the KCPP executable
-            kcpp_path = find_kcpp_executable()
-            
+            kcpp_path = find_kcpp_executable()            
             if kcpp_path:
-                # args
-                command = [kcpp_path, "no-webui.kcpps", "--showgui"]
-                
+                logging.info(f"kcpp path: {kcpp_path}")
+                command = [kcpp_path, "no-webui.kcpps", "--showgui"]                
                 subprocess.Popen(command,
                                  creationflags=subprocess.CREATE_NEW_CONSOLE if sys.platform == "win32" else 0)
-                logging.info(f"Launched KCPP with command: {' '.join(command)}")
             else:
-                logging.error("KCPP executable not found in the script directory.")
+                logging.error("KCPP executable not found in the script directory or its parent.")
         else:
             logging.info("KCPP executable is already running!")
     except Exception as e:
         logging.error(f"Error in kcpp: {str(e)}")
-
 run_kcpp()
 
 
@@ -118,7 +124,7 @@ def read_messages():
 
       # Read the text (JSON object) of the message.
       text = sys.stdin.buffer.read(text_length).decode('utf-8')
-      logging.info(f"received data from extension: {text}")      
+    #   logging.info(f"received data from extension: {text}")      
           
       #abort generation
       try:
@@ -127,7 +133,6 @@ def read_messages():
                   jsondata = json.loads(text)
                   if jsondata["data"]["task"] == "summary":
                     webpage_content = jsondata["data"]["text"]
-                    logging.info(f'webpage content : {jsondata["data"]["text"]}')
           if jsondata["data"]["status"] == "abort":              
                     abort = True
                     abort_flag_q.put(abort)
@@ -165,8 +170,8 @@ def call_handle_message():
               textobj = ai.handle_message(prev_data,q,abort_flag_q,webpage_content)
               text = textobj[0]['text']
               finish_reason = textobj[0]['finish_reason']
-              logging.info("returned data")  
-              logging.info(text)   
+            #   logging.info("returned data")  
+            #   logging.info(text)   
               send_message(json.dumps({"ai_response": text}))
               if finish_reason == 'stop':
                 send_message(json.dumps({"ai_response":"^^^stop^^^"}))
