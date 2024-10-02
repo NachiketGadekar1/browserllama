@@ -94,7 +94,7 @@ function bgcon(task){
     const portbg = chrome.runtime.connect({ name: "summary<->background" });
     if(task==1){
         document.querySelector('.spinner').style.display = 'block';
-        message = { status: "old_chat",task:"summary-chat",text: document.getElementById('question-input').value };
+        message = { status: "old_chat",task:"summary-chat",text: "Question asked by user: " + document.getElementById('question-input').value };
         console.log("summarypage input box content", message)
         portbg.postMessage(message);
     }else if(task == 2){

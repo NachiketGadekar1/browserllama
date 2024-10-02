@@ -152,7 +152,7 @@ def read_messages():
         global_data = text
         
       # Send an echo message back.
-      send_message(json.dumps({"echo message from native host": text}))
+      # send_message(json.dumps({"echo message from native host": text}))
   except Exception as e:
             logging.error(f"Error in read_messages: {str(e)}")
     
@@ -170,8 +170,8 @@ def call_handle_message():
               textobj = ai.handle_message(prev_data,q,abort_flag_q,webpage_content)
               text = textobj[0]['text']
               finish_reason = textobj[0]['finish_reason']
-            #   logging.info("returned data")  
-            #   logging.info(text)   
+              logging.info("returned data")  
+              logging.info(text)   
               send_message(json.dumps({"ai_response": text}))
               if finish_reason == 'stop':
                 send_message(json.dumps({"ai_response":"^^^stop^^^"}))

@@ -62,7 +62,7 @@ class kcpp_api:
     def text_chunker(self,text):
         text_splitter = RecursiveCharacterTextSplitter(
             chunk_size = 3000,
-            chunk_overlap  = 20,
+            chunk_overlap  = 50,
             length_function = len,
         )
         texts = text_splitter.split_text(text)
@@ -134,13 +134,18 @@ class kcpp_api:
             
             def get_request():
                 nonlocal previous_text
-                received_so_far = ""     
+                received_so_far = ""
+                i=0
+                x= "empty"            
                 try:
                     while not stop_event.is_set():                        
                         response = requests.get(f"{self.ENDPOINT}/api/extra/generate/check")
                         if response.status_code == 200:
                             response_data = response.json()
-                            if 'results' in response_data and response_data['results']:
+                            if i==0:
+                                text = response_data['results'][0]['text']                
+                                i=i+1
+                            elif 'results' in response_data and response_data['results']:
                                 current_text = response_data['results'][0]['text']                    
                                 new_content = current_text[len(previous_text):]   
                                 # logging.info(f"**NEW CONTENT **: {new_content}")        
@@ -155,7 +160,8 @@ class kcpp_api:
                                     new_content = ' '
                                     break
                                 if new_content:       
-                                    q.put(new_content)                                                    
+                                    q.put(new_content)                                             
+                                    x=1               
                                 previous_text = current_text
                         
                         time.sleep(0.2)
@@ -232,16 +238,18 @@ class kcpp_api:
                                 with open(self.file_path, "a" ,encoding="utf-8") as f:  
                                     f.write(new_conversation)
                                 # response_text = response_text.replace("\n", "")
-                                logging.info(f"Out: {results}")    
+
                             else:
                                 logging.info(f"bad response status code: {response.status_code}")
+
+                        logging.info(f"Out: {results}")    
+                        stop_event.set()
+                        get_thread.join()
+                        return results        
                                                 
                     else:
                         logging.info("Not enough chunks to process from the second index.")
                                 
-                    stop_event.set()
-                    get_thread.join()
-                    return results
                 except Exception as e:
                      logging.error(f"Error in summarise-further block: {str(e)}")
             
@@ -254,14 +262,16 @@ class kcpp_api:
             if response.status_code == 200:
                 results = response.json()['results']
                 text = results[0]['text']
-                response_text = self.split_text(text)[0]
-                response_text = response_text.replace(" ", " ")
+                # response_text = self.split_text(text)[0]
+                # response_text = response_text.replace(" ", " ")
+                # logging.info(f"##########RESPONSEtext is: {response_text}") 
                 # change the format to match previous
-                new_conversation = f"### Instruction:\n{only_text}\n### Response:\n{response_text}\n"
+                new_conversation = f"### Instruction:\n{only_text}\n### Response:\n{text}\n"
+                logging.info(f"#########$$$$$$$$$ new conv is: {text}") 
                 self.conversation_history += new_conversation
                 with open(self.file_path, "a", encoding="utf-8") as f:  
                     f.write(new_conversation) 
-                response_text = response_text.replace("\n", "")
+                # response_text = response_text.replace("\n", "")
                 logging.info(f"Out: {results}")
             return results
         
