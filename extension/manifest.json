@@ -11,6 +11,12 @@
     "default_title": "Browserllama",
     "default_popup": "home.html"
   },
+  "web_accessible_resources": [
+    {
+      "resources": ["oninstall.html"],
+      "matches": ["<all_urls>"]
+    }
+  ],
   "icons": {
     "128": "./assets/browserllama logo 128.png",
     "48": "./assets/browserllama logo 48.png"

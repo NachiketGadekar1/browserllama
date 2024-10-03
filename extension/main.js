@@ -9,9 +9,25 @@ chrome.runtime.sendMessage({action: "inject"}, function(response) {
   }
 });
 
+function disableButtonsForDuration(durationInSeconds) {
+  const summariseBtn = document.getElementById("summarise");
+  const chatBtn = document.getElementById("chat_button");
+
+  summariseBtn.disabled = true;
+  chatBtn.disabled = true;
+
+  setTimeout(() => {
+    summariseBtn.disabled = false;
+    chatBtn.disabled = false;
+  }, durationInSeconds * 1000);
+}
+
+
 function showStatus(message, duration = 3000) {
   const popup = document.getElementById('status-popup');
   const statusMessage = document.getElementById('status-message');
+
+  // disableButtonsForDuration(5)
   
   statusMessage.textContent = message;
   popup.classList.remove('hidden');

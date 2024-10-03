@@ -160,14 +160,16 @@ input[type="text"], #response {
   position: fixed;
   bottom: 100px;
   right: 35%;
-  background-color: #62cf34;
+  background-color: rgba(98, 207, 52, 0.5); /* Semi-transparent background */
   color: rgb(0, 0, 0);
   padding: 1px 3px 1px 3px;
   border: dotted;
   border-radius: 5px;
-  border-color: #110303;
+  border-color: rgba(17, 3, 3, 0.5); 
   z-index: 1000;
+  cursor: pointer;
 }
+
 
 .hidden {
 opacity: 0;

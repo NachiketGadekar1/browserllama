@@ -12,6 +12,12 @@ try{
     //listen for content-script message
     console.log("service worker active");
 
+    chrome.runtime.onInstalled.addListener((details) => {
+      if (details.reason === chrome.runtime.OnInstalledReason.INSTALL) {
+        chrome.tabs.create({ url: "./oninstall.html" });
+      }
+    });      
+
     chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
       try{
         if (request.action === "connect") {
@@ -143,7 +149,6 @@ try{
       }
     }
 
-
     //add error handling here later
     chrome.runtime.onConnect.addListener((port) => {
       if (port.name !== "popup<->background") {
@@ -154,7 +159,7 @@ try{
         console.log("Received message from popup:", portmsg);
         if(portmsg == 1) {
           console.log("background.js received text from popup: ",portmsg);
-          connect();
+          // connect();
         }else if(portmsg == 2){
           console.log("background.js received text from popup: ",portmsg);
           sendExtractedNativeMessage();
