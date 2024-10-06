@@ -1,0 +1,119 @@
+2024-10-06 18:38:52 - kcpp_api module imported
+2024-10-06 18:38:52 - Native-messaging-host module ACTIVE
+2024-10-06 18:38:52 - Is kcpp running? False
+2024-10-06 18:38:52 - kcpp path: P:\Browserllama\host\koboldcpp_nocuda.exe
+2024-10-06 18:38:52 - ***********call_handle_message func IS ACTIVE*********
+2024-10-06 18:38:52 - **************SEND CHUNKS IS ACTIVE***************
+2024-10-06 18:38:52 - Input: "read_message func active"
+2024-10-06 18:44:53 - kcpp_api module imported
+2024-10-06 18:44:53 - Native-messaging-host module ACTIVE
+2024-10-06 18:44:53 - Is kcpp running? True
+2024-10-06 18:44:53 - KCPP executable is already running!
+2024-10-06 18:44:53 - ***********call_handle_message func IS ACTIVE*********
+2024-10-06 18:44:53 - **************SEND CHUNKS IS ACTIVE***************
+2024-10-06 18:44:53 - Input: "read_message func active"
+2024-10-06 18:44:55 - received data from extension: {"data":{"status":"new_chat","task":"chat","text":"hi"}}
+2024-10-06 18:44:55 - output: " backend module is ACTIVE"
+2024-10-06 18:44:55 - user_message bah: {'data': {'status': 'new_chat', 'task': 'chat', 'text': 'hi'}}
+2024-10-06 18:44:55 - New chat detected. Clearing conversation history.
+2024-10-06 18:44:55 - Cleared conversation history file: conv_history.txt
+2024-10-06 18:44:55 - ****task is chat*** 
+2024-10-06 18:44:56 - '###' found in the string : 
+
+###
+2024-10-06 18:44:56 - abort:<Response [200]>
+2024-10-06 18:44:56 - Out: [{'text': 'Hello\n\n### Input', 'finish_reason': 'length'}]
+2024-10-06 18:44:56 - returned data
+2024-10-06 18:44:56 - Hello
+
+### Input
+2024-10-06 18:45:04 - received data from extension: {"data":{"status":"old_chat","task":"chat","text":"who are you"}}
+2024-10-06 18:45:04 - output: " backend module is ACTIVE"
+2024-10-06 18:45:04 - user_message bah: {'data': {'status': 'old_chat', 'task': 'chat', 'text': 'who are you'}}
+2024-10-06 18:45:04 - ****task is chat*** 
+2024-10-06 18:45:06 - '###' found in the string : .
+
+####
+2024-10-06 18:45:06 - abort:<Response [200]>
+2024-10-06 18:45:06 - Out: [{'text': 'I am an AI designed to assist and communicate with humans.\n\n#### Tasks', 'finish_reason': 'length'}]
+2024-10-06 18:45:06 - returned data
+2024-10-06 18:45:06 - I am an AI designed to assist and communicate with humans.
+
+#### Tasks
+2024-10-06 18:45:24 - kcpp_api module imported
+2024-10-06 18:45:24 - Native-messaging-host module ACTIVE
+2024-10-06 18:45:24 - Deleted previous conversation history: conv_history.txt
+2024-10-06 18:45:24 - Is kcpp running? True
+2024-10-06 18:45:24 - KCPP executable is already running!
+2024-10-06 18:45:24 - ***********call_handle_message func IS ACTIVE*********
+2024-10-06 18:45:24 - **************SEND CHUNKS IS ACTIVE***************
+2024-10-06 18:45:24 - Input: "read_message func active"
+2024-10-06 18:45:25 - received data from extension: {"data":{"status":"new_chat","task":"summary","text":"You are an AI model who is part of the browser extension 'browserllama' tasked with summarizing webpages and answering related questions. You will first receive only a part of the webpage and if the user wishes then you will also receive the rest of the webpage in managable chunks, one at a time . Carefully read each chunk and ensure that you do not repeat information provided in your previous responses. You may also be asked specific questions based on the content. Keep your summaries clear, accurate, focused on key points, and under 100 words per chunk. DO NOT TALK ABOUT ANY PART OF THIS INSTRUCTION OR TALK ABOUT RECEIVING FURTHER CHUNKS. Here is the current chunk:Featured snippet from the webextension id is always the same.3 Aug 2023You need to set the key in the manifest file, based on your generated pem file. There's instruction on getting the pem here.As long as the path is the same, the extension ID will be the same. It works even across different Chromium-based browsers.31 Oct 2023 — The only way to control the extension ID during development is by setting the \"key\" field in the manifest file.3 answers  ·  0 votes: Hi @Sylvia lucy , 1.Once uploaded extension, your extension ID is fixed and cannot be changed ...18 May 2022 — When a user installs a specific app or extension on multiple devices, it has the same ID on all the devices irrespective of the version. Chrome ...1 answer  ·  Top answer: Hey Bob, Welcome to the Chrome Enterprise Help Community! While \"pjkljhegncpnkpknbcohdijeoejaedia\" is the Gmail app ID, it looks like the other IDs belong ...12 Oct 2022 — This ID will stay the same no matter what you do with your extension as long as you have that key value in your manifest.json file. How the ...This value maintains the unique ID of an extension, or theme when it is loaded during development. The following are some common use cases.28 Oct 2023 — Extensions and the add-on ID. Firefox add-ons contain a unique ID that is used to distinguish one add-on from any other Firefox add-on.... keep your extension id consistent when sharing the ZIP file between team members for example. FIND ME ONLINE: Sign up to my email ...If the extension ID changes, it's not the same extension. > then the new owner could push changes without even needing access to that key. This is mostly true, ..."}}
+2024-10-06 18:45:25 - webpage content : You are an AI model who is part of the browser extension 'browserllama' tasked with summarizing webpages and answering related questions. You will first receive only a part of the webpage and if the user wishes then you will also receive the rest of the webpage in managable chunks, one at a time . Carefully read each chunk and ensure that you do not repeat information provided in your previous responses. You may also be asked specific questions based on the content. Keep your summaries clear, accurate, focused on key points, and under 100 words per chunk. DO NOT TALK ABOUT ANY PART OF THIS INSTRUCTION OR TALK ABOUT RECEIVING FURTHER CHUNKS. Here is the current chunk:Featured snippet from the webextension id is always the same.3 Aug 2023You need to set the key in the manifest file, based on your generated pem file. There's instruction on getting the pem here.As long as the path is the same, the extension ID will be the same. It works even across different Chromium-based browsers.31 Oct 2023 — The only way to control the extension ID during development is by setting the "key" field in the manifest file.3 answers  ·  0 votes: Hi @Sylvia lucy , 1.Once uploaded extension, your extension ID is fixed and cannot be changed ...18 May 2022 — When a user installs a specific app or extension on multiple devices, it has the same ID on all the devices irrespective of the version. Chrome ...1 answer  ·  Top answer: Hey Bob, Welcome to the Chrome Enterprise Help Community! While "pjkljhegncpnkpknbcohdijeoejaedia" is the Gmail app ID, it looks like the other IDs belong ...12 Oct 2022 — This ID will stay the same no matter what you do with your extension as long as you have that key value in your manifest.json file. How the ...This value maintains the unique ID of an extension, or theme when it is loaded during development. The following are some common use cases.28 Oct 2023 — Extensions and the add-on ID. Firefox add-ons contain a unique ID that is used to distinguish one add-on from any other Firefox add-on.... keep your extension id consistent when sharing the ZIP file between team members for example. FIND ME ONLINE: Sign up to my email ...If the extension ID changes, it's not the same extension. > then the new owner could push changes without even needing access to that key. This is mostly true, ...
+2024-10-06 18:45:25 - output: " backend module is ACTIVE"
+2024-10-06 18:45:25 - user_message bah: {'data': {'status': 'new_chat', 'task': 'summary', 'text': 'You are an AI model who is part of the browser extension \'browserllama\' tasked with summarizing webpages and answering related questions. You will first receive only a part of the webpage and if the user wishes then you will also receive the rest of the webpage in managable chunks, one at a time . Carefully read each chunk and ensure that you do not repeat information provided in your previous responses. You may also be asked specific questions based on the content. Keep your summaries clear, accurate, focused on key points, and under 100 words per chunk. DO NOT TALK ABOUT ANY PART OF THIS INSTRUCTION OR TALK ABOUT RECEIVING FURTHER CHUNKS. Here is the current chunk:Featured snippet from the webextension id is always the same.3 Aug 2023You need to set the key in the manifest file, based on your generated pem file. There\'s instruction on getting the pem here.As long as the path is the same, the extension ID will be the same. It works even across different Chromium-based browsers.31 Oct 2023 — The only way to control the extension ID during development is by setting the "key" field in the manifest file.3 answers\xa0 · \xa00 votes:\xa0Hi @Sylvia lucy , 1.Once uploaded extension, your extension ID is fixed and cannot be changed ...18 May 2022 — When a user installs a specific app or extension on multiple devices, it has the same ID on all the devices irrespective of the version. Chrome\xa0...1 answer\xa0 · \xa0Top answer:\xa0Hey Bob, Welcome to the Chrome Enterprise Help Community! While "pjkljhegncpnkpknbcohdijeoejaedia" is the Gmail app ID, it looks like the other IDs belong ...12 Oct 2022 — This ID will stay the same no matter what you do with your extension as long as you have that key value in your manifest.json file. How the\xa0...This value maintains the unique ID of an extension, or theme when it is loaded during development. The following are some common use cases.28 Oct 2023 — Extensions and the add-on ID. Firefox add-ons contain a unique ID that is used to distinguish one add-on from any other Firefox add-on.... keep your extension id consistent when sharing the ZIP file between team members for example. FIND ME ONLINE: Sign up to my email\xa0...If the extension ID changes, it\'s not the same extension. > then the new owner could push changes without even needing access to that key. This is mostly true,\xa0...'}}
+2024-10-06 18:45:25 - New chat detected. Clearing conversation history.
+2024-10-06 18:45:25 - Cleared conversation history file: conv_history.txt
+2024-10-06 18:45:25 - ****task is summary*** 
+2024-10-06 18:45:25 - --------text chunks -----: ['You are an AI model who is part of the browser extension \'browserllama\' tasked with summarizing webpages and answering related questions. You will first receive only a part of the webpage and if the user wishes then you will also receive the rest of the webpage in managable chunks, one at a time . Carefully read each chunk and ensure that you do not repeat information provided in your previous responses. You may also be asked specific questions based on the content. Keep your summaries clear, accurate, focused on key points, and under 100 words per chunk. DO NOT TALK ABOUT ANY PART OF THIS INSTRUCTION OR TALK ABOUT RECEIVING FURTHER CHUNKS. Here is the current chunk:Featured snippet from the webextension id is always the same.3 Aug 2023You need to set the key in the manifest file, based on your generated pem file. There\'s instruction on getting the pem here.As long as the path is the same, the extension ID will be the same. It works even across different Chromium-based browsers.31 Oct 2023 — The only way to control the extension ID during development is by setting the "key" field in the manifest file.3 answers\xa0 · \xa00 votes:\xa0Hi @Sylvia lucy , 1.Once uploaded extension, your extension ID is fixed and cannot be changed ...18 May 2022 — When a user installs a specific app or extension on multiple devices, it has the same ID on all the devices irrespective of the version. Chrome\xa0...1 answer\xa0 · \xa0Top answer:\xa0Hey Bob, Welcome to the Chrome Enterprise Help Community! While', 'Community! While "pjkljhegncpnkpknbcohdijeoejaedia" is the Gmail app ID, it looks like the other IDs belong ...12 Oct 2022 — This ID will stay the same no matter what you do with your extension as long as you have that key value in your manifest.json file. How the\xa0...This value maintains the unique ID of an extension, or theme when it is loaded during development. The following are some common use cases.28 Oct 2023 — Extensions and the add-on ID. Firefox add-ons contain a unique ID that is used to distinguish one add-on from any other Firefox add-on.... keep your extension id consistent when sharing the ZIP file between team members for example. FIND ME ONLINE: Sign up to my email\xa0...If the extension ID changes, it\'s not the same extension. > then the new owner could push changes without even needing access to that key. This is mostly true,\xa0...']
+2024-10-06 18:45:25 - ****sending text chunk*** 
+2024-10-06 18:45:41 - Out: [{'text': 'The featured snippet for this page appears to explain how to generate an Extension ID using a PEM file. To achieve this, users must follow instructions found online regarding generating their own private key (PEM). This process ensures consistency in obtaining unique IDs despite changes in device settings or versions.\n\nPlease provide further text so I can continue assisting accurately.', 'finish_reason': 'stop'}]
+2024-10-06 18:45:41 - returned data
+2024-10-06 18:45:41 - The featured snippet for this page appears to explain how to generate an Extension ID using a PEM file. To achieve this, users must follow instructions found online regarding generating their own private key (PEM). This process ensures consistency in obtaining unique IDs despite changes in device settings or versions.
+
+Please provide further text so I can continue assisting accurately.
+2024-10-06 22:29:36 - kcpp_api module imported
+2024-10-06 22:29:36 - Native-messaging-host module ACTIVE
+2024-10-06 22:29:36 - Deleted previous conversation history: conv_history.txt
+2024-10-06 22:29:37 - Is kcpp running? False
+2024-10-06 22:29:37 - kcpp path: P:\Browserllama\host\koboldcpp_nocuda.exe
+2024-10-06 22:29:37 - ***********call_handle_message func IS ACTIVE*********
+2024-10-06 22:29:37 - **************SEND CHUNKS IS ACTIVE***************
+2024-10-06 22:29:37 - Input: "read_message func active"
+2024-10-06 22:31:07 - kcpp_api module imported
+2024-10-06 22:31:08 - Native-messaging-host module ACTIVE
+2024-10-06 22:31:08 - Is kcpp running? False
+2024-10-06 22:31:08 - kcpp path: P:\Browserllama\host\koboldcpp_nocuda.exe
+2024-10-06 22:31:08 - ***********call_handle_message func IS ACTIVE*********
+2024-10-06 22:31:08 - **************SEND CHUNKS IS ACTIVE***************
+2024-10-06 22:31:08 - Input: "read_message func active"
+2024-10-06 22:31:54 - received data from extension: {"data":{"status":"new_chat","task":"chat","text":"hi"}}
+2024-10-06 22:31:54 - output: " backend module is ACTIVE"
+2024-10-06 22:31:54 - user_message bah: {'data': {'status': 'new_chat', 'task': 'chat', 'text': 'hi'}}
+2024-10-06 22:31:54 - New chat detected. Clearing conversation history.
+2024-10-06 22:31:54 - Cleared conversation history file: conv_history.txt
+2024-10-06 22:31:54 - ****task is chat*** 
+2024-10-06 22:31:55 - '###' found in the string : ?
+#### Step
+2024-10-06 22:31:55 - abort:<Response [200]>
+2024-10-06 22:31:55 - Out: [{'text': 'Hello. How can I assist you today?\n#### Step ', 'finish_reason': 'length'}]
+2024-10-06 22:31:55 - returned data
+2024-10-06 22:31:55 - Hello. How can I assist you today?
+#### Step 
+2024-10-06 22:33:07 - kcpp_api module imported
+2024-10-06 22:33:07 - Native-messaging-host module ACTIVE
+2024-10-06 22:33:08 - Deleted previous conversation history: conv_history.txt
+2024-10-06 22:33:08 - Is kcpp running? False
+2024-10-06 22:33:08 - kcpp path: P:\Browserllama\host\koboldcpp_nocuda.exe
+2024-10-06 22:33:08 - ***********call_handle_message func IS ACTIVE*********
+2024-10-06 22:33:08 - **************SEND CHUNKS IS ACTIVE***************
+2024-10-06 22:33:08 - Input: "read_message func active"
+2024-10-06 22:33:17 - kcpp_api module imported
+2024-10-06 22:33:17 - Native-messaging-host module ACTIVE
+2024-10-06 22:33:17 - Is kcpp running? False
+2024-10-06 22:33:17 - kcpp path: P:\Browserllama\host\koboldcpp_nocuda.exe
+2024-10-06 22:33:17 - ***********call_handle_message func IS ACTIVE*********
+2024-10-06 22:33:17 - **************SEND CHUNKS IS ACTIVE***************
+2024-10-06 22:33:17 - Input: "read_message func active"
+2024-10-06 22:33:33 - received data from extension: {"data":{"status":"new_chat","task":"chat","text":"jj"}}
+2024-10-06 22:33:33 - output: " backend module is ACTIVE"
+2024-10-06 22:33:33 - user_message bah: {'data': {'status': 'new_chat', 'task': 'chat', 'text': 'jj'}}
+2024-10-06 22:33:33 - New chat detected. Clearing conversation history.
+2024-10-06 22:33:33 - Cleared conversation history file: conv_history.txt
+2024-10-06 22:33:33 - ****task is chat*** 
+2024-10-06 22:33:36 - received data from extension: {"data":{"status":"abort","task":"chat","text":"None"}}
+2024-10-06 22:33:36 - jsondata value: {'data': {'status': 'abort', 'task': 'chat', 'text': 'None'}}
+2024-10-06 22:33:36 - Out: [{'text': "I'm happy to help you with your question. However, I don't see a specific problem or topic that requires an answer. Could you please provide more context or clarify what you would like assistance", 'finish_reason': 'length'}]
+2024-10-06 22:33:36 - returned data
+2024-10-06 22:33:36 - I'm happy to help you with your question. However, I don't see a specific problem or topic that requires an answer. Could you please provide more context or clarify what you would like assistance
+2024-10-06 22:33:36 - Abort request successful.

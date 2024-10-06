@@ -1,0 +1,1 @@
+run 'insatll.bat' to install the native application.
