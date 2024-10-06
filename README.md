@@ -2,7 +2,7 @@
 
 # BrowserLlama 
 
-**BrowserLlama** is a browser extension that lets you summarize and chat with any webpage using a local LLM. 
+**BrowserLlama** is a browser extension that lets you summarize and chat with any webpage using a local LLM. It utilizes a koboldcpp backend for inference and a native-messaging-host facilitates the extension-backend communication. 
 
 ## Features
 
@@ -45,7 +45,6 @@
    ```
    npx webpack --config webpack.config.js  
    ```
-
 
 ## Supported platforms
    Current version of browserllama only runs on chromium based browsers on windows.    
