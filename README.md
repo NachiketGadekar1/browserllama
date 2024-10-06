@@ -6,10 +6,10 @@
 
 ## Features
 
-- **Webpage Summaries**:  Create clear and concise summaries of any webpage .
-- **Question the Webpage**: Engage with webpage content by asking questions through an AI-powered interface.
+- **Webpage Summaries**:  Create customizable summaries of any webpage .
+- **Question the Webpage**: Engage with webpage content by asking questions to the ai.
 - **AI Chat**: Have conversations with language models.
-- **Local AI Backend**: Leverage your locally runnnig language models for a fully private and customizable experience.
+- **Local AI Backend**: Leverage your locally runnnig language models for a fully private experience.
 
 ## Getting Started
 
@@ -23,7 +23,7 @@
    ```
 3. Install Python Backend
 
-   Navigate to the host directory where the Python native-host is located and install the required packages using pip:
+   Install the required packages using pip:
       ```
    cd browserllama
    pip install -r requirements.txt
