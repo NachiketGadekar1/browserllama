@@ -13,7 +13,6 @@ import subprocess
 import os
 from backend_api_handler import kcpp_api
 
-logging.info(f"Native-messaging-host module ACTIVE")
 
 #logging
 #remove from prod??
@@ -136,7 +135,7 @@ def read_messages():
           if jsondata["data"]["status"] == "abort":              
                     abort = True
                     abort_flag_q.put(abort)
-                    logging.info(f"jsondata value: {jsondata}")  
+                    # logging.info(f"jsondata value: {jsondata}")  
                     abortrequest = requests.post("http://127.0.0.1:5001/api/extra/abort")      
                     if abortrequest.status_code == 200:
                         logging.info("Abort request successful.")
@@ -186,7 +185,6 @@ def call_handle_message():
 
 # send individuals chunks to the extension
 def send_chunks():
-    logging.info("**************SEND CHUNKS IS ACTIVE***************")
     while True:  
         try:
             while not q.empty():

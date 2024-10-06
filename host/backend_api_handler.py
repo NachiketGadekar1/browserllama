@@ -11,7 +11,7 @@ from langchain.text_splitter import RecursiveCharacterTextSplitter
 stop_event = threading.Event()
 
 logging.basicConfig(filename='kcpp_api.log',  encoding='utf-8', level=logging.INFO, format='%(asctime)s - %(message)s', datefmt='%Y-%m-%d %H:%M:%S')
-logging.info("kcpp_api module imported")
+# logging.info("kcpp_api module imported")
 
 class kcpp_api:        
     def __init__(self):
@@ -27,14 +27,14 @@ class kcpp_api:
     def delete_history_file(self):
         if os.path.exists(self.file_path):
             os.remove(self.file_path)    
-            logging.info(f"Deleted previous conversation history: {self.file_path}")
+            # logging.info(f"Deleted previous conversation history: {self.file_path}")
             
     def clear_conversation_history(self):
         # Clear the in-memory conversation history
         self.conversation_history = ""
         # Clear the contents of the file
         open(self.file_path, 'w').close()        
-        logging.info(f"Cleared conversation history file: {self.file_path}")        
+        # logging.info(f"Cleared conversation history file: {self.file_path}")        
 
     def load_conversation_history(self):
         if os.path.exists(self.file_path):
@@ -49,11 +49,11 @@ class kcpp_api:
             if os.path.exists(file_path):
                 with open(file_path, 'r', encoding='utf-8') as file:
                     content = file.read()
-                logging.info(f"Successfully read conversation history from {file_path}")
-                logging.info(f"history is {content}")
+                # logging.info(f"Successfully read conversation history from {file_path}")
+                # logging.info(f"history is {content}")
                 return content
             else:
-                logging.info(f"No conversation history file found at {file_path}")
+                # logging.info(f"No conversation history file found at {file_path}")
                 return ""
         except IOError as e:
             logging.error(f"Error reading file {file_path}: {str(e)}")
@@ -90,7 +90,7 @@ class kcpp_api:
             "use_authors_note": False,
             "use_world_info": False,
             "max_context_length": value,
-            "max_length": 200,
+            "max_length": 300,
             "rep_pen": 1.3,
             "rep_pen_range": 4096,
             "rep_pen_slope": 0.7,
@@ -115,7 +115,7 @@ class kcpp_api:
             
             # Check if it's a new chat
             if user_message["data"].get("status") == "new_chat":
-                logging.info("New chat detected. Clearing conversation history.")
+                # logging.info("New chat detected. Clearing conversation history.")
                 self.clear_conversation_history()
         
             only_text = user_message["data"]["text"]
@@ -125,7 +125,7 @@ class kcpp_api:
                 logging.info("abort detected in status")  
                 
             if user_message["data"]["task"] == "summary-chat":
-                logging.info("summary_chat_prompt detected") 
+                # logging.info("summary_chat_prompt detected") 
                 summary_chat_prompt = user_message["data"]["text"] 
                 summary_chat_prompt = self.get_prompt(summary_chat_prompt)
 
@@ -153,10 +153,10 @@ class kcpp_api:
                                 # logging.info(f"***received_so_far***: {received_so_far}")  
                                 # some models keep infintitely generating it own ###instruction and ###response, this aborts generation when that happens
                                 if new_content == '###' or '###' in received_so_far :
-                                    logging.info(f"'###' found in the string : {new_content}")         
+                                    # logging.info(f"'###' found in the string : {new_content}")         
                                     stop_event.set()
                                     abort = requests.post(f"{self.ENDPOINT}/api/extra/abort") 
-                                    logging.info(f"abort:{abort}") 
+                                    # logging.info(f"abort:{abort}") 
                                     new_content = ' '
                                     break
                                 if new_content:       
@@ -179,31 +179,31 @@ class kcpp_api:
                 logging.info(f"****task is chat*** ") 
                 response = requests.post(f"{self.ENDPOINT}/api/v1/generate", json=prompt)
             elif user_message["data"].get("task") == "summary-chat": 
-                logging.info(f"****task is summary-chat*** ")  
+                # logging.info(f"****task is summary-chat*** ")  
                 # summary_chat_prompt = self.read_conversation_history() + summary_chat_prompt
                 # logging.info(f"%%%%%%%%%%%prompt is:::::::::: {summary_chat_prompt}") 
                 response = requests.post(f"{self.ENDPOINT}/api/v1/generate", json= summary_chat_prompt)  
             elif user_message["data"].get("task") == "summary": 
-                logging.info(f"****task is summary*** ") 
+                # logging.info(f"****task is summary*** ") 
                 # summarsing only the first chunk
                 chunks = self.text_chunker(user_message["data"]["text"])
                 abort_value = abort_flag_q.get
-                logging.info(f"****sending text chunk*** ") 
+                # logging.info(f"****sending text chunk*** ") 
                 prompt = self.get_prompt(chunks[0])
-                logging.info(f"prompt is:::::::::: {prompt}") 
+                # logging.info(f"prompt is: {prompt}") 
                 response = requests.post(f"{self.ENDPOINT}/api/v1/generate", json=prompt)
                 if response.status_code == 200:
                     results = response.json()['results']
                     text = results[0]['text']
-                    logging.info(f"text is: {text}") 
+                    # logging.info(f"text is: {text}") 
                     # change the format to match previous
                     new_conversation = f"### Instruction:\n{chunks[0]}\n### Response:\n{text}\n"
                     self.conversation_history += new_conversation
-                    logging.info(f"self.conversation history after one chunk summary is:{self.conversation_history}")    
+                    # logging.info(f"self.conversation history after one chunk summary is:{self.conversation_history}")    
                     with open(self.file_path, "a", encoding="utf-8") as f:  
                         f.write(new_conversation) 
                     # response_text = response_text.replace("\n", "")
-                    logging.info(f"Out: {results}")  
+                    # logging.info(f"Out: {results}")  
                 else:
                     logging.info(f"bad response status code: {response.status_code}")
                                                 
@@ -213,11 +213,11 @@ class kcpp_api:
             # bugged
             elif user_message["data"].get("task") == "summarise-further": 
                 try:
-                    logging.info("task is summarsing further")
+                    # logging.info("task is summarsing further")
                     # we send one text chunk at a time to speed things up
                     chunks = self.text_chunker(webpage_content)
-                    logging.info(f"$$received chunks$$: {chunks}") 
-                    logging.info(f"$$length of chunks$$: {len(chunks)}")
+                    # logging.info(f"$$received chunks$$: {chunks}") 
+                    # logging.info(f"$$length of chunks$$: {len(chunks)}")
                     if len(chunks) > 1:
                         for only_text in chunks[1:]:
                             abort_value = abort_flag_q.get()
@@ -226,12 +226,12 @@ class kcpp_api:
                                 break
                             
                             prompt = self.get_prompt(only_text)
-                            logging.info(f"current chunk is: {only_text}") 
+                            # logging.info(f"current chunk is: {only_text}") 
                             response = requests.post(f"{self.ENDPOINT}/api/v1/generate", json=prompt)
                             if response.status_code == 200:
                                 results = response.json()['results']
                                 text = results[0]['text']
-                                logging.info(f"text is: {text}")  
+                                # logging.info(f"text is: {text}")  
                                 # change the format to match previous
                                 new_conversation = f"### Instruction:\n{only_text}\n### Response:\n{text}\n"
                                 self.conversation_history += new_conversation
@@ -242,7 +242,7 @@ class kcpp_api:
                             else:
                                 logging.info(f"bad response status code: {response.status_code}")
 
-                        logging.info(f"Out: {results}")    
+                        # logging.info(f"Out: {results}")    
                         stop_event.set()
                         get_thread.join()
                         return results        
@@ -267,7 +267,7 @@ class kcpp_api:
                 # logging.info(f"##########RESPONSEtext is: {response_text}") 
                 # change the format to match previous
                 new_conversation = f"### Instruction:\n{only_text}\n### Response:\n{text}\n"
-                logging.info(f"#########$$$$$$$$$ new conv is: {text}") 
+                logging.info(f" new conv is: {text}") 
                 self.conversation_history += new_conversation
                 with open(self.file_path, "a", encoding="utf-8") as f:  
                     f.write(new_conversation) 
