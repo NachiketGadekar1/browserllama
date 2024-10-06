@@ -1,4 +1,4 @@
-![alt text](https://github.com/NachiketGadekar1/browserllama/blob/main/extension/assets/browserllama-logo-black.png?raw=true)
+<img src="https://raw.githubusercontent.com/NachiketGadekar1/browserllama/main/extension/assets/browserllama-logo-black.png" alt="browserllama logo" width="50" height=""50/>
 
 # BrowserLlama 
 
