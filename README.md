@@ -25,7 +25,7 @@
 
    Install the required packages using pip:
       ```
-   cd browserllama
+   cd host
    pip install -r requirements.txt
    ```
 4. Load the Extension in Your Browser
