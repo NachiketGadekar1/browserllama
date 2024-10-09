@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link rel="stylesheet" href="styles.css">
+    <script type="module" src="chat.js" defer></script>
+</head>
+<style>        
+    body {
+        width: 500px;
+        height: 500px;
+        display: flex;
+        flex-direction: column;
+        margin: 0;
+        padding: 0;
+        overflow: hidden;
+    }
+
+    .back-button-logo {
+        width: 20px; 
+        height: 20px; 
+    }
+
+    .button-logo {
+        width: 20px; 
+        height: 20px; 
+        margin-left: 5px; /* Space between text and image */
+    }
+</style>
+<body>  
+     <div class="header" style="padding-left:5px ;">
+        <button class="back-button" style="border: solid; border-color: white; "> 
+            <img src="./assets/icons8-back-16.png" alt="Logo" class="back-button-logo">
+        </button>
+        <!-- Each &nbsp; represents a single space. -->
+        <!-- fuck css -->
+        <h1>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Chat</h1>
+    </div>
+
+    <div class="chat_content" style="font-size: medium;";></div>
+    
+    <div class="input-container">
+        <input type="text" placeholder="Ask" id="question-input">
+        <button id="abort-button">
+            ABORT
+        </button>
+        <button id="send-button" style="border: solid; border-color: white;">
+           <img src="./assets/icons8-send-32.png" alt="Logo" class="button-logo">
+        </button>
+    </div>
+</body>
+</html>

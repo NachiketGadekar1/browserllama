@@ -1,11 +1,17 @@
 {
+  "browser_specific_settings": {
+    "gecko": {
+      "id": "addon@example.com",
+      "strict_min_version": "42.0"
+    }
+  },
   "manifest_version": 3,
   "name": "Browserllama",
   "version": "1.0",
   "description": "BrowserLlama is a browser extension that lets you summarize and chat with any webpage using a locally running Language model.",
   "permissions": ["nativeMessaging","scripting", "activeTab","storage"],
   "background": {
-    "service_worker": "./background.js"
+    "scripts": ["background.js"]
    },
   "action": {
     "default_title": "Browserllama",
