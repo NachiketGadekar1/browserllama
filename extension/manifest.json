@@ -1,7 +1,7 @@
 {
   "manifest_version": 3,
   "name": "Browserllama",
-  "version": "1.0",
+  "version": "1.0.1",
   "description": "BrowserLlama is a browser extension that lets you summarize and chat with any webpage using a locally running Language model.",
   "permissions": ["nativeMessaging","scripting", "activeTab","storage"],
   "background": {

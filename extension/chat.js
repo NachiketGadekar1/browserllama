@@ -120,13 +120,12 @@ function appendAiResponse(msg) {
   // Helper function to handle the truncation before ###
   function truncateResponse(response) {
     if (response.includes('###')) {
-      return response.split('###')[0];  // Take the text before ###
+      return response.split('###')[0];  
     }
-    return response;  // If no ###, return the full response
+    return response;  
   }
 
   if (msg.ai_response_chunk) {
-    // Handle ai_response_chunk
     textToAppend = truncateResponse(msg.ai_response_chunk) || 'No AI response found';
     
     if (reference) {
@@ -135,7 +134,6 @@ function appendAiResponse(msg) {
       console.error("No reference element to append to");
     }
   } else if (msg.ai_response) {
-    // Handle ai_response
     textToAppend = truncateResponse(msg.ai_response) || 'No AI response found';
 
     if (reference) {

@@ -8,26 +8,42 @@ summarybgcon()
 function append(msg) {
   console.log("This is from the append func:", msg);
   let textToAppend = '';
-
+  
   if (msg && msg["echo message from native host"] && msg["echo message from native host"].data) {
     textToAppend = msg["echo message from native host"].data.text || 'No text found';
-  }else if (msg.ai_response) {
-    console.log("full msg:", msg.ai_response);
-  }else if (msg.ai_response_chunk) {
+  } else if (msg.ai_response) {
+      console.log("full msg:", msg.ai_response);
+      // does this even make a difference?
+      // if(msg.ai_response == "^^^stop^^^" || msg.ai_response == "\n" || msg.ai_response == " "  ){
+      //   console.log("stop detected")
+      // }else{
+      //   textToAppend = msg.ai_response || 'No AI response found';
+      //   console.log("full msg:", msg.ai_response);
+      //   const summaryDiv = document.querySelector('.summary-content');
+      //   const spinner = document.querySelector('.spinner');
+      //   if (summaryDiv) {
+      //     spinner.style.display = 'none';
+      //     summaryDiv.textContent = textToAppend;
+      //     summaryDiv.scrollTop = summaryDiv.scrollHeight;
+      //   } else {
+      //     console.error("Couldn't find the .summary-content div");
+      //   }
+      //   return; // Exit early after handling ai_response
+      // }
+  } else if (msg.ai_response_chunk) {
     textToAppend = msg.ai_response_chunk || 'No AI response found';
-  }else {
+  } else {
     textToAppend = 'Unexpected message format';
   }
-
+  
   console.log("Text to append:", textToAppend);
-
   const summaryDiv = document.querySelector('.summary-content');
   const spinner = document.querySelector('.spinner');
   if (summaryDiv) {
     spinner.style.display = 'none';
     if (textToAppend === "\n") {
-      summaryDiv.innerHTML += '<br>'; 
-      summaryDiv.innerHTML += '<br>'; 
+      summaryDiv.innerHTML += '<br>';
+      summaryDiv.innerHTML += '<br>';
     } else {
       summaryDiv.appendChild(document.createTextNode(textToAppend));
     }
