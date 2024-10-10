@@ -9,7 +9,7 @@
 - **Webpage Summaries**:  Create customizable summaries of any webpage .
 - **Question the Webpage**: Engage with webpage content by asking questions to the ai.
 - **AI Chat**: Have conversations with language models.
-- **Local AI Backend**: Leverage your locally runnnig language models for a fully private experience.
+- **Local AI Backend**: Leverage your locally running language models for a fully private experience.
 
 ## Getting Started
 
