@@ -114,25 +114,40 @@ function createNewAIResponseStructure() {
 
 
 function appendAiResponse(msg) {
-  console.log("append ai response func:", msg);    
+  console.log("append ai response func:", msg);
   let textToAppend = '';
+
+  // Helper function to handle the truncation before ###
+  function truncateResponse(response) {
+    if (response.includes('###')) {
+      return response.split('###')[0];  // Take the text before ###
+    }
+    return response;  // If no ###, return the full response
+  }
+
   if (msg.ai_response_chunk) {
-      textToAppend = msg.ai_response_chunk || 'No AI response found';
-  } else {
-      console.log('Unexpected message format:',msg);
-      // temporary hack
-      // var element = document.getElementById("abort-button");
-      // var element2 = document.getElementById("send-button");
-      // element.style.display = "none";  
-      // element2.style.display = "block";
-  }
-  console.log("Text to append:", textToAppend);
-  
-  if (reference) {
+    // Handle ai_response_chunk
+    textToAppend = truncateResponse(msg.ai_response_chunk) || 'No AI response found';
+    
+    if (reference) {
       reference.textContent += textToAppend;
-  } else {
+    } else {
       console.error("No reference element to append to");
+    }
+  } else if (msg.ai_response) {
+    // Handle ai_response
+    textToAppend = truncateResponse(msg.ai_response) || 'No AI response found';
+
+    if (reference) {
+      reference.textContent = textToAppend;
+    } else {
+      console.error("No reference element to append to");
+    }
+  } else {
+    console.log('Unexpected message format:', msg);
   }
+
+  console.log("Text to append:", textToAppend);
 }
 
 
