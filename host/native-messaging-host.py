@@ -15,7 +15,6 @@ from backend_api_handler import kcpp_api
 
 
 #logging
-#remove from prod??
 logging.basicConfig(filename='native_messaging.log',  encoding='utf-8',level=logging.INFO, 
                     format='%(asctime)s - %(message)s', datefmt='%Y-%m-%d %H:%M:%S')
 

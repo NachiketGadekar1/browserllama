@@ -179,30 +179,22 @@ class kcpp_api:
                 logging.info(f"****task is chat*** ") 
                 response = requests.post(f"{self.ENDPOINT}/api/v1/generate", json=prompt)
             elif user_message["data"].get("task") == "summary-chat": 
-                # logging.info(f"****task is summary-chat*** ")  
-                # summary_chat_prompt = self.read_conversation_history() + summary_chat_prompt
-                # logging.info(f"%%%%%%%%%%%prompt is:::::::::: {summary_chat_prompt}") 
                 response = requests.post(f"{self.ENDPOINT}/api/v1/generate", json= summary_chat_prompt)  
             elif user_message["data"].get("task") == "summary": 
-                # logging.info(f"****task is summary*** ") 
                 # summarsing only the first chunk
                 chunks = self.text_chunker(user_message["data"]["text"])
                 abort_value = abort_flag_q.get
-                # logging.info(f"****sending text chunk*** ") 
                 prompt = self.get_prompt(chunks[0])
-                # logging.info(f"prompt is: {prompt}") 
                 response = requests.post(f"{self.ENDPOINT}/api/v1/generate", json=prompt)
                 if response.status_code == 200:
                     results = response.json()['results']
                     text = results[0]['text']
-                    # logging.info(f"text is: {text}") 
                     # change the format to match previous
                     new_conversation = f"### Instruction:\n{chunks[0]}\n### Response:\n{text}\n"
                     self.conversation_history += new_conversation
                     # logging.info(f"self.conversation history after one chunk summary is:{self.conversation_history}")    
                     with open(self.file_path, "a", encoding="utf-8") as f:  
                         f.write(new_conversation) 
-                    # response_text = response_text.replace("\n", "")
                     # logging.info(f"Out: {results}")  
                 else:
                     logging.info(f"bad response status code: {response.status_code}")
@@ -213,11 +205,8 @@ class kcpp_api:
             # bugged
             elif user_message["data"].get("task") == "summarise-further": 
                 try:
-                    # logging.info("task is summarsing further")
                     # we send one text chunk at a time to speed things up
                     chunks = self.text_chunker(webpage_content)
-                    # logging.info(f"$$received chunks$$: {chunks}") 
-                    # logging.info(f"$$length of chunks$$: {len(chunks)}")
                     if len(chunks) > 1:
                         for only_text in chunks[1:]:
                             abort_value = abort_flag_q.get()
@@ -262,8 +251,6 @@ class kcpp_api:
             if response.status_code == 200:
                 results = response.json()['results']
                 text = results[0]['text']
-                # response_text = self.split_text(text)[0]
-                # response_text = response_text.replace(" ", " ")
                 # logging.info(f"##########RESPONSEtext is: {response_text}") 
                 # change the format to match previous
                 new_conversation = f"### Instruction:\n{only_text}\n### Response:\n{text}\n"
