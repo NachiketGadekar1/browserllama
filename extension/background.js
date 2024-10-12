@@ -9,6 +9,9 @@ let injectionFLag = false
 let reconnectAttempts = 0;
 const MAX_RECONNECT_ATTEMPTS = 3;
 const RECONNECT_DELAY = 1000; 
+// keep updating this const appropriately, also check the number in compatibility-issue.html page
+const compatible_host_version = "v1.1"
+let compatibility_reminder = false
 
 try{
     //listen for content-script message
@@ -30,7 +33,7 @@ try{
             console.log("swrkr listenr:",request.action)
             async function injectScript() {
               const [tab] = await chrome.tabs.query({ active: true, currentWindow: true });
-              // console.log("TAB:",tab.id)
+              console.log("TAB:",tab.id)
               await chrome.scripting.executeScript({
                 target: { tabId: tab.id },
                 files: ['./dist/content-script.bundle.js']
@@ -44,10 +47,6 @@ try{
         }
 
         extract = request;
-        console.log(sender.tab ?
-                    "from a content script:" + sender.tab.url :
-                    "from the extension");
-        console.log("this is the object received from content script: ", request);
         // store extracted content using chrome.storage api
         chrome.storage.session.set({extract}).then(() => {
           if (chrome.runtime.lastError) {
@@ -146,7 +145,7 @@ try{
     function ping(){
       if (!port) return false; 
 
-      // we are assuming that if everything goes right the connection is working or if error is thrown we are disconnected.
+      // we are assuming that if everything goes right the connection is working or if an error is thrown we are disconnected.
       let pingmsg = {data:{ status: "",task:"ping",text:""}};
       try{
         console.log("pinging")
@@ -199,7 +198,6 @@ try{
       port.onMessage.addListener((portmsg) => {
         console.log("Received message from popup:", portmsg);
         if(portmsg == 1) {
-          console.log("background.js received text from popup: ",portmsg);
           pingres = ping()
           if(pingres ==  false){
             connect();
@@ -207,7 +205,6 @@ try{
             console.log("host is already connected")
           }
         }else if(portmsg == 2){
-          console.log("background.js received text from popup: ",portmsg);
           sendExtractedNativeMessage();
         } else {
           console.log("background.js received invalid text from popup: ",portmsg);
@@ -261,16 +258,26 @@ try{
       console.log("Received native message:", JSON.stringify(msg));
       
       if (msg["echo message from native host"]) {
-        console.log("Received echo message from native host");
-      }else if (msg["ping"] === "pong") {
-        console.log("Received ping-pong message");
-        // this will let the popup know what message to show
-        forwardtopopup("ping_success")
+          console.log("Received echo message from native host");
+      }else if (msg["info"] === "v1.1") {
+          console.log("Received ping reply , info:", msg["info"]);
+          // this will let the popup know what message to show
+          forwardtopopup("ping_success")
+          if(msg["info"] == compatible_host_version){
+              console.log("host version is compatible")
+          }else{
+              console.log("host version is incompatible")
+              // we want to show the compatibility page only once
+              if(compatibility_reminder == false){ 
+                  forwardtopopup("host incompatible") 
+              }
+              compatibility_reminder = true
+          }
       }else if (msg["error"] === "relaunching kcpp exe") {
-        console.log("host is trying to relaunch kcpp exe");
-        forwardtopopup("ping_failed")
+          console.log("host is trying to relaunch kcpp exe");
+          forwardtopopup("ping_failed")
       }else {
-        handleAIResponse(msg);
+          handleAIResponse(msg);
       }
     }
 

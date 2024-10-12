@@ -4,7 +4,6 @@ import sys
 import logging
 import traceback
 import threading
-import asyncio
 import json
 import time
 import queue
@@ -19,6 +18,10 @@ from backend_api_handler import kcpp_api
 logging.basicConfig(filename='native_messaging.log',  encoding='utf-8',level=logging.INFO, 
                     format='%(asctime)s - %(message)s', datefmt='%Y-%m-%d %H:%M:%S')
 
+
+# intializing some global variables and data structures
+#!!!!keep updating version number appropriately!!!!
+version = 1.1
 ai = kcpp_api()
 global_data = None
 webpage_content = ""
@@ -104,9 +107,9 @@ def send_message(message):
   
 # Function that reads messages from the webapp.
 def read_messages(): 
-  global abort,global_data,webpage_content
+  global abort,global_data,webpage_content,version
 
-  # received string looks like this:
+  # received string looks something like this:
   # '{"data":{"status":"new_chat","text":"hi"}}'
   try:    
     logging.info('Input: "read_message func active"')
@@ -145,8 +148,8 @@ def read_messages():
                       process_names = ["koboldcpp_nocuda.exe", "koboldcpp.exe"]
                       p_value = is_process_running(process_names)
                       if p_value == True:
-                        logging.info("sent pong msg")
-                        send_message(json.dumps({"ping":"pong"}))
+                        logging.info("received ping and sent message with version number")
+                        send_message(json.dumps({"info":"v"+str(version)}))
                       else:
                           logging.info("koboldcpp doesnt seem to be running, trying to relaunch")
                           send_message(json.dumps({"error":"relaunching kcpp exe"}))

@@ -12,7 +12,7 @@ from langchain.text_splitter import RecursiveCharacterTextSplitter
 stop_event = threading.Event()
 
 logging.basicConfig(filename='kcpp_api.log',  encoding='utf-8', level=logging.INFO, format='%(asctime)s - %(message)s', datefmt='%Y-%m-%d %H:%M:%S')
-# logging.info("kcpp_api module imported")
+logging.info("kcpp_api module imported")
 
 class kcpp_api:        
     def __init__(self):
