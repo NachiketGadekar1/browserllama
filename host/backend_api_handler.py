@@ -8,6 +8,7 @@ import json
 import queue
 from langchain.text_splitter import RecursiveCharacterTextSplitter
 
+
 stop_event = threading.Event()
 
 logging.basicConfig(filename='kcpp_api.log',  encoding='utf-8', level=logging.INFO, format='%(asctime)s - %(message)s', datefmt='%Y-%m-%d %H:%M:%S')
@@ -234,7 +235,7 @@ class kcpp_api:
                         # logging.info(f"Out: {results}")    
                         stop_event.set()
                         get_thread.join()
-                        return results        
+                        return   
                                                 
                     else:
                         logging.info("Not enough chunks to process from the second index.")

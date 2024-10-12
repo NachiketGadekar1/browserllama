@@ -9,7 +9,6 @@ let injectionFLag = false
 let reconnectAttempts = 0;
 const MAX_RECONNECT_ATTEMPTS = 3;
 const RECONNECT_DELAY = 1000; 
-// let connect_status = false
 
 try{
     //listen for content-script message
@@ -104,44 +103,60 @@ try{
           forwardtopopup("error");
           return false;
       }
-  }
+    }
   
-  function onDisconnected() {
-      console.log("Native connection disconnected");
-      port = null;
-      
-      if (reconnectAttempts < MAX_RECONNECT_ATTEMPTS) {
-          reconnectAttempts++;
-          console.log(`Attempting to reconnect (${reconnectAttempts}/${MAX_RECONNECT_ATTEMPTS})...`);
-          setTimeout(() => {
-              if (!port) {
-                  connect();
-              }
-          }, RECONNECT_DELAY);
-      } else {
-          console.error("Max reconnection attempts reached");
-          forwardtopopup("connection_failed");
+    function onDisconnected() {
+        console.log("Native connection disconnected");
+        port = null;
+        
+        if (reconnectAttempts < MAX_RECONNECT_ATTEMPTS) {
+            reconnectAttempts++;
+            console.log(`Attempting to reconnect (${reconnectAttempts}/${MAX_RECONNECT_ATTEMPTS})...`);
+            setTimeout(() => {
+                if (!port) {
+                    connect();
+                }
+            }, RECONNECT_DELAY);
+        } else {
+            console.error("Max reconnection attempts reached");
+            forwardtopopup("connection_failed");
+        }
+    }
+    
+    function sendNativeMessage(data) {
+        try {
+            if (!port) {
+                console.log("No active connection, attempting to reconnect...");
+                if (!connect()) {
+                    throw new Error("Failed to establish connection");
+                }
+            }
+            
+            const message = { data: data };
+            port.postMessage(message);
+            console.log("Message sent successfully:", data);
+        } catch(error) {
+            console.error("Error in sendNativeMessage:", error);
+            forwardtopopup("message_send_failed");
+            throw error; // Re-throw to maintain existing error handling flow
+        }
+    }
+
+    // ping to check host connection
+    function ping(){
+      if (!port) return false; 
+
+      let pingmsg = {data:{ status: "",task:"ping",text:""}};
+      try{
+        console.log("pinging")
+        port.postMessage(pingmsg);
+        console.log("ping successful")
+        return true
+      }catch{
+        console.log("ping failed")
+        return false
       }
-  }
-  
-  function sendNativeMessage(data) {
-      try {
-          if (!port) {
-              console.log("No active connection, attempting to reconnect...");
-              if (!connect()) {
-                  throw new Error("Failed to establish connection");
-              }
-          }
-          
-          const message = { data: data };
-          port.postMessage(message);
-          console.log("Message sent successfully:", data);
-      } catch(error) {
-          console.error("Error in sendNativeMessage:", error);
-          forwardtopopup("message_send_failed");
-          throw error; // Re-throw to maintain existing error handling flow
-      }
-  }
+    }
 
     // forward message to popup
     function forwardtopopup(data) {
@@ -155,7 +170,6 @@ try{
     }
 
     function forward_to_summarise_page(data) {
-      console.log("***********forward_to_summarise_page() is active*************")
       if (portsumpg) {
         try{
           console.log("data to be sent is:",data)
@@ -185,7 +199,12 @@ try{
         console.log("Received message from popup:", portmsg);
         if(portmsg == 1) {
           console.log("background.js received text from popup: ",portmsg);
-          connect();
+          pingres = ping()
+          if(pingres ==  false){
+            connect();
+          }else{
+            console.log("host is already connected")
+          }
         }else if(portmsg == 2){
           console.log("background.js received text from popup: ",portmsg);
           sendExtractedNativeMessage();
@@ -242,20 +261,19 @@ try{
       
       if (msg["echo message from native host"]) {
         console.log("Received echo message from native host");
-      } else {
+      }else if (msg["ping"] === "pong") {
+        console.log("Received ping-pong message");
+      }else {
         handleAIResponse(msg);
       }
     }
 
     function handleAIResponse(msg) {
-      console.log("***********handleairesponse() is active*************")
       try {
         if(receivedMsgFromComponent && typeof receivedMsgFromComponent === 'object' && 'task' in receivedMsgFromComponent){
           if(receivedMsgFromComponent.task == "chat"){
             forward_to_chat_page(msg);
           }else{
-            console.log("handleairesponse else cond")
-            // forwardtopopup(msg);      
             forward_to_summarise_page(msg);
           }
         }else{

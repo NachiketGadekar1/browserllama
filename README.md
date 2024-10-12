@@ -57,7 +57,7 @@ webstore: https://chromewebstore.google.com/detail/browserllama/iiceejapkffbankf
    ```
    "path": "native-messaging-host.exe"
    ```              
-   the exe and the internals folder needs to be on the same level as the bat, so you will have to copy it from dist               
+   the exe and the internals folder needs to be on the same level as the json, so you will have to copy it from dist               
 
 7. **Build the Extension (optional, follow only if source is modified)**
 

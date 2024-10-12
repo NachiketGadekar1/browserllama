@@ -4,6 +4,7 @@ import sys
 import logging
 import traceback
 import threading
+import asyncio
 import json
 import time
 import queue
@@ -99,13 +100,12 @@ def send_message(message):
   # Write the message itself.
   sys.stdout.write(message)
   sys.stdout.flush()
-  # logging.info(f"Output from send_msg: {message}")
-  
+
   
 # Function that reads messages from the webapp.
 def read_messages(): 
   global abort,global_data,webpage_content
-  
+
   # received string looks like this:
   # '{"data":{"status":"new_chat","text":"hi"}}'
   try:    
@@ -122,65 +122,63 @@ def read_messages():
 
       # Read the text (JSON object) of the message.
       text = sys.stdin.buffer.read(text_length).decode('utf-8')
-    #   logging.info(f"received data from extension: {text}")      
+      logging.info(f"received data from extension: {text}")      
           
       #abort generation
       try:
           jsondata = text   
-          if jsondata != None:
-                  jsondata = json.loads(text)
-                  if jsondata["data"]["task"] == "summary":
-                    webpage_content = jsondata["data"]["text"]
+          jsondata = json.loads(text)
+
           if jsondata["data"]["status"] == "abort":              
                     abort = True
                     abort_flag_q.put(abort)
-                    # logging.info(f"jsondata value: {jsondata}")  
                     abortrequest = requests.post("http://127.0.0.1:5001/api/extra/abort")      
                     if abortrequest.status_code == 200:
                         logging.info("Abort request successful.")
                     else:
-                        logging.error(f"Abort request failed: {abortrequest.status_code}")                   
+                        logging.error(f"Abort request failed: {abortrequest.status_code}")   
+
+          if jsondata != None:
+                  if jsondata["data"]["task"] == "summary":
+                    webpage_content = jsondata["data"]["text"]
+                  elif jsondata["data"]["task"] == "ping":
+                      logging.info("sent pong msg")
+                      send_message(json.dumps({"ping":"pong"}))
+                      continue   
+
       except Exception as e:
         logging.error(f"Error during abort: {str(e)}")
 
-      if text == '{"text":"exit"}':
-        break
-      
       if abort == False:
-        global_data = text
+        # Start call_handle_message in a separate thread to keep reading continuously
+        thread = threading.Thread(target=call_handle_message, args=(text,))
+        thread.start()
         
       # Send an echo message back.
       # send_message(json.dumps({"echo message from native host": text}))
+
   except Exception as e:
             logging.error(f"Error in read_messages: {str(e)}")
     
-    
-#run the model with user prompt/webpage
-def call_handle_message():
-   logging.info("***********call_handle_message func IS ACTIVE*********")
-   global global_data, webpage_content
-   prev_data = ""
-   while True:
-        data = global_data
-        if prev_data != data and data !=None:
-            prev_data=data      
-            try:                                    
-              textobj = ai.handle_message(prev_data,q,abort_flag_q,webpage_content)
-              text = textobj[0]['text']
-              finish_reason = textobj[0]['finish_reason']
-              logging.info("returned data")  
-              logging.info(text)   
-              send_message(json.dumps({"ai_response": text}))
-              if finish_reason == 'stop':
-                send_message(json.dumps({"ai_response":"^^^stop^^^"}))
-                
-            except Exception as e:
-                logging.error(f"Error in call_handle_message: {str(e)}")
-        # else:
-        #     logging.info("queue data is same")       
-        
-        time.sleep(0.2)  
      
+def call_handle_message(prompt):
+    logging.info("***********call_handle_message func IS ACTIVE*********")
+    global webpage_content
+    data = prompt
+    logging.info(f"+++++++++++++++data: {data}")
+
+    try:                                    
+        textobj = ai.handle_message(data,q,abort_flag_q,webpage_content)
+        text = textobj[0]['text']
+        logging.info("returned data")  
+        logging.info(text)   
+        send_message(json.dumps({"ai_response": text}))
+        send_message(json.dumps({"ai_response":"^^^stop^^^"}))
+    except Exception as e:
+        logging.error(f"Error in call_handle_message: {str(e)}")
+
+    return    
+
 
 # send individuals chunks to the extension
 def send_chunks():
@@ -194,13 +192,15 @@ def send_chunks():
         except Exception as e:
             logging.error(f"Error in send_chunks: {str(e)}")
      
+
 def Main():
     try:        
-        handle_thread = threading.Thread(target=call_handle_message)
+        # handle_thread = threading.Thread(target=call_handle_message)
+
         send_chunks_thread = threading.Thread(target=send_chunks)
-        handle_thread.daemon = True
+        # handle_thread.daemon = True
         send_chunks_thread.daemon = True
-        handle_thread.start()
+        # handle_thread.start()
         send_chunks_thread.start()
         read_messages()
         logging.info("Exiting Main")

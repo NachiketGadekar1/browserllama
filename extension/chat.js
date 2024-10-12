@@ -5,7 +5,7 @@ let reference = null
 // hide abort by default
 document.getElementById("abort-button").style.display = "none";
 
-// TODO: remove useless else conditions later
+// TODO: remove useless conditions later
 function append(msg, isUserQuery = false) {
     console.log("append func:",msg);
     
@@ -42,6 +42,30 @@ function createIdGenerator() {
     };
 }
 
+// Function to show the abort button
+function showAbortButton() {
+  var element = document.getElementById("abort-button");
+  element.style.display = "block";
+}
+
+// Function to hide the abort button
+function hideAbortButton() {
+  var element = document.getElementById("abort-button");
+  element.style.display = "none";
+}
+
+// Function to show the send button
+function showSendButton() {
+  var element = document.getElementById("send-button");
+  element.style.display = "block";
+}
+
+// Function to hide the send button
+function hideSendButton() {
+  var element = document.getElementById("send-button");
+  element.style.display = "none";
+}
+
 function toggleButtonsState(){
   var element = document.getElementById("abort-button");
   var element2 = document.getElementById("send-button");
@@ -61,14 +85,16 @@ document.addEventListener('DOMContentLoaded', function () {
           append({ text: userInput }, true);  // Append user query
           createNewAIResponseStructure();
           bgcon(1);
-          toggleButtonsState();
+          hideSendButton();
+          showAbortButton();
           document.getElementById('question-input').value = '';
       }
   });
 
   document.getElementById('abort-button').addEventListener('click', function() {
     console.log("aborting");
-    toggleButtonsState()
+    hideAbortButton();
+    showSendButton();
     bgcon(2);
   });
 
@@ -175,7 +201,8 @@ function bgcon(task){
         let object;
         object = smsg
         if (object.ai_response === "^^^stop^^^"){
-          toggleButtonsState()
+          hideAbortButton();
+          showSendButton();
         }else{
           appendAiResponse(smsg)
         }
