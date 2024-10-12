@@ -78,10 +78,10 @@ class kcpp_api:
     def get_prompt(self, text):  
         try:
             mcl = requests.get(f"{self.ENDPOINT}/api/extra/true_max_context_length")  
-            value = mcl.json()['value']          
+            value = mcl.json()['value']         
         except (requests.RequestException, ValueError):
             mcl = 4096
-            logging.info('requests.get(f"{self.ENDPOINT}/api/extra/true_max_context_length") failed') 
+            logging.error('requests.get(f"{self.ENDPOINT}/api/extra/true_max_context_length") failed') 
              
         return {
             # "prompt": self.conversation_history +f"{self.username}: {text}\n{self.botname}:",

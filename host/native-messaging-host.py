@@ -142,14 +142,22 @@ def read_messages():
                   if jsondata["data"]["task"] == "summary":
                     webpage_content = jsondata["data"]["text"]
                   elif jsondata["data"]["task"] == "ping":
-                      logging.info("sent pong msg")
-                      send_message(json.dumps({"ping":"pong"}))
+                      process_names = ["koboldcpp_nocuda.exe", "koboldcpp.exe"]
+                      p_value = is_process_running(process_names)
+                      if p_value == True:
+                        logging.info("sent pong msg")
+                        send_message(json.dumps({"ping":"pong"}))
+                      else:
+                          logging.info("koboldcpp doesnt seem to be running, trying to relaunch")
+                          send_message(json.dumps({"error":"relaunching kcpp exe"}))
+                          run_kcpp()
+
                       continue   
 
       except Exception as e:
         logging.error(f"Error during abort: {str(e)}")
 
-      if abort == False:
+      if text and abort == False:
         # Start call_handle_message in a separate thread to keep reading continuously
         thread = threading.Thread(target=call_handle_message, args=(text,))
         thread.start()
@@ -164,11 +172,14 @@ def read_messages():
 def call_handle_message(prompt):
     logging.info("***********call_handle_message func IS ACTIVE*********")
     global webpage_content
-    data = prompt
-    logging.info(f"+++++++++++++++data: {data}")
+
+     # Check if the prompt contains a non-empty string
+    if not prompt or not isinstance(prompt, str) or prompt.strip() == "":
+        logging.error("Error: The prompt is empty or not a valid string.")
+        return
 
     try:                                    
-        textobj = ai.handle_message(data,q,abort_flag_q,webpage_content)
+        textobj = ai.handle_message(prompt,q,abort_flag_q,webpage_content)
         text = textobj[0]['text']
         logging.info("returned data")  
         logging.info(text)   

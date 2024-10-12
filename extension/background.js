@@ -137,7 +137,7 @@ try{
             console.log("Message sent successfully:", data);
         } catch(error) {
             console.error("Error in sendNativeMessage:", error);
-            forwardtopopup("message_send_failed");
+            forwardtopopup("failed_to_send_message_to_backend");
             throw error; // Re-throw to maintain existing error handling flow
         }
     }
@@ -146,14 +146,15 @@ try{
     function ping(){
       if (!port) return false; 
 
+      // we are assuming that if everything goes right the connection is working or if error is thrown we are disconnected.
       let pingmsg = {data:{ status: "",task:"ping",text:""}};
       try{
         console.log("pinging")
         port.postMessage(pingmsg);
-        console.log("ping successful")
         return true
       }catch{
         console.log("ping failed")
+        forwardtopopup("ping_failed")
         return false
       }
     }
@@ -263,6 +264,11 @@ try{
         console.log("Received echo message from native host");
       }else if (msg["ping"] === "pong") {
         console.log("Received ping-pong message");
+        // this will let the popup know what message to show
+        forwardtopopup("ping_success")
+      }else if (msg["error"] === "relaunching kcpp exe") {
+        console.log("host is trying to relaunch kcpp exe");
+        forwardtopopup("ping_failed")
       }else {
         handleAIResponse(msg);
       }

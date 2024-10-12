@@ -80,7 +80,6 @@ function bgcon(task){
     portbg.postMessage(1);
   }else if(task==2){
     //send value of input box to background.js
-
     message = { text: document.getElementById('input-text').value };
     portbg.postMessage(message);
   }else if(task ==3){
@@ -92,8 +91,15 @@ function bgcon(task){
 
   portbg.onMessage.addListener((smsg) => {
     console.log("Received message from service worker:", smsg);
-    if(smsg == "error"){
+    if(smsg == "error" || smsg == "connection_failed" || smsg == "failed_to_send_message_to_backend"){
       window.location.href = 'error.html';
+    }else if(smsg == "ping_success"){
+        showStatus("Connected", 1000);
+    }else if(smsg == "ping_failed"){
+        showStatus("retrying connection", 5000);
+    }else{
+      console.log("main.js received invalid message")
+      showStatus("something went wrong", 4000);
     }
   });
 }
