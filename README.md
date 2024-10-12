@@ -48,7 +48,9 @@ webstore: https://chromewebstore.google.com/detail/browserllama/iiceejapkffbankf
    ```
    pyinstaller native-messaging-host.py                              
    ```                                    
-   then change path field in com.google.chrome.example.echo.json/com.google.chrome.example.ech-win.json from:
+   then change path field in com.google.chrome.example.echo.json/com.google.chrome.example.ech-win.json 
+   
+   from:
    ```
    "path": "native-messaging-host.bat"
    ```
