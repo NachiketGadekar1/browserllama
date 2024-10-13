@@ -1,0 +1,6 @@
+.venv/
+/host/kcpp_api.log
+/host/conv_history.txt
+*.log
+extension/node_modules
+firefox/extension/node_modules

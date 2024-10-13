@@ -1,0 +1,65 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+    <script type="module" src="main.js" defer></script>
+    <link rel="stylesheet" href="styles.css">
+  </head>  
+  <style>
+    .summarise_btn{
+      padding-top: 20px;      
+      padding-bottom: 20px; 
+    }
+    .button-logo {
+      width: 20px; 
+      height: 20px; 
+      margin-right: 8px; 
+    }
+    #summarise{
+      display: flex;
+      align-items: center; 
+      justify-content: center; 
+      width: 110px;
+      height: 40px;
+      border: solid; 
+      border-color: white;
+    }
+    #chat_button {
+      display: flex;
+      align-items: center; 
+      justify-content: center;  
+      width: 110px;
+      height: 40px;
+      border: solid; 
+      border-color: white;
+    }
+    p {
+      color: white;
+      text-align: center;
+    }
+
+  </style>
+  <body>
+    <div class="container">
+      <img src="./assets/Llama-PNG-Photo-2251227700.png" alt="Llama" width="40%" height="0%">
+      <h1 class="text">browserllama</h1>
+       <div class="summarise_btn">
+        <button id="summarise">
+          <img src="./assets/summarylogo.png" alt="Logo" class="button-logo">
+          Summarise webpage
+        </button>
+      </div> 
+        <button id="chat_button" >
+          <img src="./assets/speech-bubble_12534135.png" alt="Logo" class="button-logo">
+          Chat with AI
+        </button>
+    </div>
+    <p>recommended backend version:1.1</p>
+    <div id="status-popup" class="status-popup hidden">
+      <p id="status-message"></p>
+    </div>
+  </body>
+</html>
