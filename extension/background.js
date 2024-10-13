@@ -96,6 +96,7 @@ try{
           port.onDisconnect.addListener(onDisconnected);
           reconnectAttempts = 0;
           console.log("Successfully connected to native host");
+          ping()
           return true;
       } catch(error) {
           console.error("Error connecting to native host:", error);
@@ -198,16 +199,19 @@ try{
       port.onMessage.addListener((portmsg) => {
         console.log("Received message from popup:", portmsg);
         if(portmsg == 1) {
+          console.log("msg is 1 piniging")
           pingres = ping()
+          console.log("pring res is:",pingres)
           if(pingres ==  false){
             connect();
           }else{
+            ping()
             console.log("host is already connected")
           }
         }else if(portmsg == 2){
           sendExtractedNativeMessage();
         } else {
-          console.log("background.js received invalid text from popup: ",portmsg);
+          console.log("message invalid ",portmsg);
           sendNativeMessage(portmsg);
         }
       });
