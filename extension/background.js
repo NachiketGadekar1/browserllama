@@ -9,7 +9,7 @@ let injectionFLag = false
 let reconnectAttempts = 0;
 const MAX_RECONNECT_ATTEMPTS = 3;
 const RECONNECT_DELAY = 1000; 
-// keep updating this const appropriately, also check the number in compatibility-issue.html page
+// keep updating version number as needed, also check the number in compatibility-issue.html page
 const compatible_host_version = "v1.1"
 let compatibility_reminder = false
 
@@ -256,7 +256,6 @@ try{
 
     function onNativeMessage(msg) {
       console.log("Received native message:", JSON.stringify(msg));
-      
       if (msg["echo message from native host"]) {
           console.log("Received echo message from native host");
       }else if (msg["info"] === "v1.1") {
