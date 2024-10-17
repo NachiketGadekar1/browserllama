@@ -69,5 +69,5 @@ webstore: https://chromewebstore.google.com/detail/browserllama/iiceejapkffbankf
    ```
 
 ## Supported platforms
-   Current version of browserllama only runs on chromium based browsers on windows.    
+   Current version of browserllama only runs on chromium based browsers on windows. Firefox support is in beta.    
 
