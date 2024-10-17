@@ -5,7 +5,7 @@ let reference = null
 // hide abort by default
 document.getElementById("abort-button").style.display = "none";
 
-// TODO: remove useless else conditions later
+// TODO: remove useless conditions later
 function append(msg, isUserQuery = false) {
     console.log("append func:",msg);
     
@@ -42,6 +42,30 @@ function createIdGenerator() {
     };
 }
 
+// Function to show the abort button
+function showAbortButton() {
+  var element = document.getElementById("abort-button");
+  element.style.display = "block";
+}
+
+// Function to hide the abort button
+function hideAbortButton() {
+  var element = document.getElementById("abort-button");
+  element.style.display = "none";
+}
+
+// Function to show the send button
+function showSendButton() {
+  var element = document.getElementById("send-button");
+  element.style.display = "block";
+}
+
+// Function to hide the send button
+function hideSendButton() {
+  var element = document.getElementById("send-button");
+  element.style.display = "none";
+}
+
 function toggleButtonsState(){
   var element = document.getElementById("abort-button");
   var element2 = document.getElementById("send-button");
@@ -61,14 +85,16 @@ document.addEventListener('DOMContentLoaded', function () {
           append({ text: userInput }, true);  // Append user query
           createNewAIResponseStructure();
           bgcon(1);
-          toggleButtonsState();
+          hideSendButton();
+          showAbortButton();
           document.getElementById('question-input').value = '';
       }
   });
 
   document.getElementById('abort-button').addEventListener('click', function() {
     console.log("aborting");
-    toggleButtonsState()
+    hideAbortButton();
+    showSendButton();
     bgcon(2);
   });
 
@@ -114,25 +140,38 @@ function createNewAIResponseStructure() {
 
 
 function appendAiResponse(msg) {
-  console.log("append ai response func:", msg);    
+  console.log("append ai response func:", msg);
   let textToAppend = '';
+
+  // Helper function to handle the truncation before ###
+  function truncateResponse(response) {
+    if (response.includes('###')) {
+      return response.split('###')[0];  
+    }
+    return response;  
+  }
+
   if (msg.ai_response_chunk) {
-      textToAppend = msg.ai_response_chunk || 'No AI response found';
-  } else {
-      console.log('Unexpected message format:',msg);
-      // temporary hack
-      // var element = document.getElementById("abort-button");
-      // var element2 = document.getElementById("send-button");
-      // element.style.display = "none";  
-      // element2.style.display = "block";
-  }
-  console.log("Text to append:", textToAppend);
-  
-  if (reference) {
+    textToAppend = truncateResponse(msg.ai_response_chunk) || 'No AI response found';
+    
+    if (reference) {
       reference.textContent += textToAppend;
-  } else {
+    } else {
       console.error("No reference element to append to");
+    }
+  } else if (msg.ai_response) {
+    textToAppend = truncateResponse(msg.ai_response) || 'No AI response found';
+
+    if (reference) {
+      reference.textContent = textToAppend;
+    } else {
+      console.error("No reference element to append to");
+    }
+  } else {
+    console.log('Unexpected message format:', msg);
   }
+
+  console.log("Text to append:", textToAppend);
 }
 
 
@@ -162,7 +201,8 @@ function bgcon(task){
         let object;
         object = smsg
         if (object.ai_response === "^^^stop^^^"){
-          toggleButtonsState()
+          hideAbortButton();
+          showSendButton();
         }else{
           appendAiResponse(smsg)
         }

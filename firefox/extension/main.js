@@ -37,6 +37,13 @@ function showStatus(message, duration = 3000) {
   }, duration);
 }
 
+function changePage(url) {
+  if (url) {
+      window.location.href = url;
+  } else {
+      console.error("Invalid URL provided."); 
+  }
+}
 
 document.addEventListener('DOMContentLoaded', function () {
   // Check if we should run the connect logic
@@ -80,20 +87,28 @@ function bgcon(task){
     portbg.postMessage(1);
   }else if(task==2){
     //send value of input box to background.js
-
     message = { text: document.getElementById('input-text').value };
     portbg.postMessage(message);
   }else if(task ==3){
     //this is for summarise webpage
     portbg.postMessage(2);
   }else{
-    portbg.postMessage("Hello from the popup else condition!");
+    portbg.postMessage("invalid task number");
   }
 
   portbg.onMessage.addListener((smsg) => {
     console.log("Received message from service worker:", smsg);
-    if(smsg == "error"){
+    if(smsg == "error" || smsg == "connection_failed" || smsg == "failed_to_send_message_to_backend"){
       window.location.href = 'error.html';
+    }else if(smsg == "ping_success"){
+        showStatus("Connected", 1000);
+    }else if(smsg == "ping_failed"){
+        showStatus("retrying connection", 5000);
+    }else if(smsg == "host incompatible"){
+      changePage('compatibility-issue.html')
+    }else{
+      console.log("main.js received invalid message")
+      showStatus("something went wrong", 4000);
     }
   });
 }
