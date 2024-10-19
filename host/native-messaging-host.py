@@ -98,11 +98,14 @@ run_kcpp()
 
 # Helper function that sends a message to the webapp.
 def send_message(message):
-  # Write message size.
-  sys.stdout.buffer.write(struct.pack('I', len(message)))
-  # Write the message itself.
-  sys.stdout.write(message)
-  sys.stdout.flush()
+  try:
+    # Write message size.
+    sys.stdout.buffer.write(struct.pack('I', len(message)))
+    # Write the message itself.
+    sys.stdout.write(message)
+    sys.stdout.flush()
+  except Exception as e:
+    logging.error(f"Error in send_message: {str(e)}") 
 
   
 # Function that reads messages from the webapp.
@@ -200,7 +203,7 @@ def send_chunks():
         try:
             while not q.empty():
                 chunk = q.get()
-                # logging.info(f"*****HOST received data from backend*****: {chunk}")
+                # logging.info("*****HOST received data from backend*****")
                 send_message(json.dumps({"ai_response_chunk": chunk}))
             time.sleep(0.2)  
         except Exception as e:

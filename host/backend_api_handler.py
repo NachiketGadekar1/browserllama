@@ -62,7 +62,7 @@ class kcpp_api:
             
     def text_chunker(self,text):
         text_splitter = RecursiveCharacterTextSplitter(
-            chunk_size = 3000,
+            chunk_size = 600,
             chunk_overlap  = 50,
             length_function = len,
         )
@@ -91,7 +91,7 @@ class kcpp_api:
             "use_authors_note": False,
             "use_world_info": False,
             "max_context_length": value,
-            "max_length": 300,
+            "max_length": 50,
             "rep_pen": 1.3,
             "rep_pen_range": 4096,
             "rep_pen_slope": 0.7,
@@ -139,7 +139,7 @@ class kcpp_api:
                 i=0
                 x= "empty"            
                 try:
-                    while not stop_event.is_set():                        
+                    while not stop_event.is_set():                      
                         response = requests.get(f"{self.ENDPOINT}/api/extra/generate/check")
                         if response.status_code == 200:
                             response_data = response.json()
@@ -154,10 +154,9 @@ class kcpp_api:
                                 # logging.info(f"***received_so_far***: {received_so_far}")  
                                 # some models keep infintitely generating it own ###instruction and ###response, this aborts generation when that happens
                                 if new_content == '###' or '###' in received_so_far :
-                                    # logging.info(f"'###' found in the string : {new_content}")         
+                                    logging.info(f"'###' found in the string : {new_content}")         
                                     stop_event.set()
                                     abort = requests.post(f"{self.ENDPOINT}/api/extra/abort") 
-                                    # logging.info(f"abort:{abort}") 
                                     new_content = ' '
                                     break
                                 if new_content:       
@@ -165,7 +164,7 @@ class kcpp_api:
                                     x=1               
                                 previous_text = current_text
                         
-                        time.sleep(0.2)
+                        time.sleep(0.1)
                         
                 except Exception as e:
                     logging.error(f"---------------Error in get_request----------: {str(e)}")        
@@ -210,25 +209,27 @@ class kcpp_api:
                     chunks = self.text_chunker(webpage_content)
                     if len(chunks) > 1:
                         for only_text in chunks[1:]:
-                            abort_value = abort_flag_q.get()
-                            if abort_value == True:
-                                logging.info(f"****abort flag true****")
-                                break
-                            
+                        # Check abort flag without removing it from queue
+                            try:
+                                abort_value = abort_flag_q.get_nowait()
+                                if abort_value:
+                                    logging.info(f"****abort flag true****")
+                                    break
+                            except queue.Empty:
+                                pass
+                                
                             prompt = self.get_prompt(only_text)
                             # logging.info(f"current chunk is: {only_text}") 
                             response = requests.post(f"{self.ENDPOINT}/api/v1/generate", json=prompt)
                             if response.status_code == 200:
                                 results = response.json()['results']
                                 text = results[0]['text']
-                                # logging.info(f"text is: {text}")  
                                 # change the format to match previous
                                 new_conversation = f"### Instruction:\n{only_text}\n### Response:\n{text}\n"
                                 self.conversation_history += new_conversation
                                 with open(self.file_path, "a" ,encoding="utf-8") as f:  
                                     f.write(new_conversation)
                                 # response_text = response_text.replace("\n", "")
-
                             else:
                                 logging.info(f"bad response status code: {response.status_code}")
 
