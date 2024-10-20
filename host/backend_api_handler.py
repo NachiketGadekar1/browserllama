@@ -62,7 +62,7 @@ class kcpp_api:
             
     def text_chunker(self,text):
         text_splitter = RecursiveCharacterTextSplitter(
-            chunk_size = 600,
+            chunk_size = 3000,
             chunk_overlap  = 50,
             length_function = len,
         )
@@ -91,7 +91,7 @@ class kcpp_api:
             "use_authors_note": False,
             "use_world_info": False,
             "max_context_length": value,
-            "max_length": 50,
+            "max_length": 300,
             "rep_pen": 1.3,
             "rep_pen_range": 4096,
             "rep_pen_slope": 0.7,

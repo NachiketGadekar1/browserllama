@@ -3,5 +3,5 @@
   "description": "firefox Native Messaging API Host",
   "path": "native-messaging-host.exe",
   "type": "stdio",
-  "allowed_extensions": ["addon@example.com"]
+  "allowed_extensions": ["browserllama@nachiketgadekar"]
 }
