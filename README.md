@@ -44,7 +44,7 @@ webstore: https://chromewebstore.google.com/detail/browserllama/iiceejapkffbankf
 
 6. **Allow the browser to launch the right file**
 
-    Go to the host folder and open native-messaging-host.bat and make sure that it is pointing to native-messaging-host.py if you want to test any modified host code or if you want to test native-messaging-host.exe which you can compile using
+    Go to the host folder and open native-messaging-host.bat and make sure that it is pointing to native-messaging-host.py if you want to test any modified host code or if you want to test native-messaging-host.exe which is compiled using
    ```
    pyinstaller native-messaging-host.py                              
    ```                                    
